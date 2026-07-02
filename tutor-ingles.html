@@ -1,0 +1,935 @@
+<title>Ruta de Inglés — 16 semanas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#F4F7F5; --card:#FFFFFF; --ink:#22312E; --muted:#5E6E69;
+    --primary:#14655A; --primary-deep:#0C4B43; --soft:#E2EFE9; --softer:#EEF5F1;
+    --amber:#B9741A; --amber-soft:#F7ECDB;
+    --ok:#2E8F63; --ok-soft:#E2F2E9; --bad:#C4574E; --bad-soft:#F9E8E6;
+    --line:#DCE4E0; --radius:14px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:16px}
+  button{font-family:var(--sans);cursor:pointer}
+  .wrap{max-width:680px;margin:0 auto;padding:0 18px 80px}
+
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:20;background:var(--primary-deep);color:#fff}
+  .topbar-in{max-width:680px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px}
+  .topbar .brand{font-family:var(--serif);font-size:1.05rem;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+  .topbar .brand button{all:unset;cursor:pointer;font:inherit;color:inherit}
+  .globalbar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.22);overflow:hidden}
+  .globalbar>div{height:100%;background:#8FD3B8;border-radius:3px;transition:width .4s ease}
+  .pct{font-variant-numeric:tabular-nums;font-size:.8rem;opacity:.9;min-width:38px;text-align:right}
+  .gear{all:unset;cursor:pointer;font-size:1.05rem;padding:2px 4px;border-radius:6px}
+  .gear:focus-visible{outline:2px solid #8FD3B8}
+
+  /* Hero (home) */
+  .hero{padding:34px 0 8px}
+  .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.7rem;font-weight:700;color:var(--primary)}
+  h1{font-family:var(--serif);font-weight:600;font-size:2rem;margin:.25rem 0 .4rem;text-wrap:balance}
+  .lede{color:var(--muted);margin:0;max-width:52ch}
+  .stats{display:flex;gap:10px;margin:20px 0 6px;flex-wrap:wrap}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px 16px;flex:1;min-width:120px}
+  .stat b{display:block;font-size:1.35rem;font-family:var(--serif);font-variant-numeric:tabular-nums;color:var(--primary-deep)}
+  .stat span{font-size:.75rem;color:var(--muted)}
+
+  .month{margin-top:30px}
+  .month-h{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--primary);padding-bottom:6px;margin-bottom:12px}
+  .month-h .mn{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--primary-deep)}
+  .month-h .mt{color:var(--muted);font-size:.85rem}
+  .weeks{display:flex;flex-direction:column;gap:8px}
+  .week-row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;width:100%;text-align:left;transition:border-color .15s}
+  .week-row:not(:disabled):hover{border-color:var(--primary)}
+  .week-row:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+  .week-row:disabled{opacity:.55;cursor:not-allowed;background:var(--softer)}
+  .wnum{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--primary);min-width:2ch;font-variant-numeric:tabular-nums}
+  .wmain{flex:1}
+  .wtitle{font-weight:600;font-size:.95rem}
+  .wgoal{font-size:.78rem;color:var(--muted)}
+  .dots{display:flex;gap:4px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+  .dot.on{background:var(--ok)}
+  .wstate{font-size:1rem}
+
+  /* Cards & common */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .btn{border:none;border-radius:10px;padding:11px 18px;font-size:.95rem;font-weight:600;background:var(--primary);color:#fff}
+  .btn:hover{background:var(--primary-deep)}
+  .btn:focus-visible{outline:2px solid var(--primary-deep);outline-offset:2px}
+  .btn.sec{background:var(--soft);color:var(--primary-deep)}
+  .btn.sec:hover{background:#d3e6dd}
+  .btn.ghost{background:transparent;color:var(--primary-deep);border:1px solid var(--line)}
+  .btn.warn{background:var(--bad)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .back{all:unset;cursor:pointer;color:var(--primary);font-weight:600;font-size:.85rem;display:inline-block;margin:18px 0 4px;padding:4px 0}
+  .back:focus-visible{outline:2px solid var(--primary)}
+
+  /* Week screen */
+  .wk-head h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;margin:.2rem 0}
+  .goalbox{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.9rem;margin:12px 0}
+  .tip{background:var(--softer);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;font-size:.92rem;margin:14px 0}
+  .tip h3{margin:0 0 6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--primary)}
+  .tip em{font-family:var(--serif);font-style:italic}
+  .mods{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+  .mod-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:13px 16px;width:100%;text-align:left}
+  .mod-row:hover{border-color:var(--primary)}
+  .mod-row:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+  .mod-ico{width:38px;height:38px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex:none}
+  .mod-row.done .mod-ico{background:var(--ok-soft)}
+  .mod-name{font-weight:600;font-size:.95rem}
+  .mod-sub{font-size:.78rem;color:var(--muted)}
+  .mod-check{margin-left:auto;color:var(--ok);font-weight:700}
+
+  /* Exercise screens */
+  .ex-top{display:flex;align-items:center;gap:12px;margin:6px 0 14px}
+  .ex-title{font-family:var(--serif);font-size:1.2rem;font-weight:600}
+  .ex-prog{margin-left:auto;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .pbar{height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:18px}
+  .pbar>div{height:100%;background:var(--primary);transition:width .3s}
+  .phrase-es{font-size:.95rem;color:var(--muted);margin:0 0 6px}
+  .phrase-en{font-family:var(--serif);font-size:1.5rem;font-weight:600;line-height:1.35;margin:0;text-wrap:balance}
+  .hidden-en{filter:blur(0);}
+  .center{text-align:center}
+  .exd{min-height:190px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .opts{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+  .opt{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:12px 14px;font-size:1rem;text-align:left;font-family:var(--serif)}
+  .opt:hover{border-color:var(--primary)}
+  .opt:focus-visible{outline:2px solid var(--primary)}
+  .opt.right{background:var(--ok-soft);border-color:var(--ok)}
+  .opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+  .feedback{margin-top:14px;font-weight:600;min-height:1.5em}
+  .feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+  input[type=text]{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:1rem;font-family:var(--sans);background:#fff;color:var(--ink)}
+  input[type=text]:focus{outline:2px solid var(--primary);border-color:var(--primary)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:46px;padding:10px;border:1px dashed var(--line);border-radius:10px;margin-bottom:12px}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 12px;font-family:var(--serif);font-size:1rem}
+  .chip:hover{border-color:var(--primary)}
+  .chip.placed{background:var(--soft);border-color:var(--primary)}
+  .transcript{background:var(--softer);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-family:var(--serif);font-style:italic;min-height:2.6em;margin-top:12px;color:var(--ink)}
+  .score-pill{display:inline-block;border-radius:999px;padding:3px 12px;font-size:.8rem;font-weight:700}
+  .score-pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .score-pill.mid{background:var(--amber-soft);color:var(--amber)}
+  .score-pill.bad{background:var(--bad-soft);color:var(--bad)}
+  .mic{width:64px;height:64px;border-radius:50%;border:none;background:var(--bad);color:#fff;font-size:1.5rem;transition:transform .15s}
+  .mic.idle{background:var(--primary)}
+  .mic:hover{transform:scale(1.06)}
+  .mic:focus-visible{outline:3px solid var(--soft)}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
+  .note{font-size:.8rem;color:var(--muted)}
+  .result-big{font-family:var(--serif);font-size:1.6rem;font-weight:600;margin:10px 0}
+  .method{margin-top:34px}
+  .method h2{font-family:var(--serif);font-size:1.2rem;font-weight:600;border-bottom:2px solid var(--primary);padding-bottom:6px}
+  .method ol{padding-left:20px;margin:10px 0;font-size:.92rem;color:var(--ink)}
+  .method li{margin-bottom:6px}
+  dialog{border:none;border-radius:var(--radius);padding:22px;max-width:340px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  dialog::backdrop{background:rgba(20,40,35,.45)}
+  .set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg button{border:none;background:#fff;padding:6px 12px;font-size:.85rem}
+  .seg button.on{background:var(--primary);color:#fff}
+</style>
+
+<div class="topbar"><div class="topbar-in">
+  <div class="brand"><button id="homeBtn" aria-label="Ir al inicio">Ruta de Inglés</button></div>
+  <div class="globalbar" aria-hidden="true"><div id="gbar" style="width:0%"></div></div>
+  <div class="pct" id="gpct">0%</div>
+  <button class="gear" id="gearBtn" aria-label="Ajustes">⚙</button>
+</div></div>
+
+<div class="wrap" id="app" aria-live="polite"></div>
+
+<dialog id="setDlg">
+  <h3 style="margin:0 0 10px;font-family:var(--serif)">Ajustes</h3>
+  <div class="set-row"><span>Velocidad de la voz</span>
+    <div class="seg" id="rateSeg">
+      <button data-r="0.7">Lenta</button><button data-r="0.9">Media</button><button data-r="1">Normal</button>
+    </div>
+  </div>
+  <div class="set-row"><span>Modo libre<br><small class="note">Desbloquea todas las semanas</small></span>
+    <div class="seg" id="freeSeg"><button data-f="0">No</button><button data-f="1">Sí</button></div>
+  </div>
+  <div class="set-row" style="border:none"><span>Reiniciar todo el progreso</span>
+    <button class="btn warn" id="resetBtn" style="padding:7px 12px;font-size:.8rem">Reiniciar</button>
+  </div>
+  <div class="row"><button class="btn sec" id="closeDlg">Cerrar</button></div>
+</dialog>
+
+<script>
+"use strict";
+/* ================= DATA ================= */
+const MONTHS = [
+  {n:1, title:"Supervivencia oral", sub:"Presentarte y hablar de tu vida"},
+  {n:2, title:"Contar cosas", sub:"Pasado, planes y opiniones"},
+  {n:3, title:"Fluidez y reacción", sub:"Sonar natural y no quedarte sin palabras"},
+  {n:4, title:"Mundo real", sub:"Trabajo, errores crónicos y evaluación"},
+];
+const WEEKS = [
+{n:1,m:1,title:"Presentarte",goal:"Decir quién sos, de dónde sos y a qué te dedicás, sin frenarte.",
+ tip:"<h3>Mini-lección</h3>Para presentarte usás el verbo <em>to be</em> (ser/estar): <em>I'm Ana, I'm from Argentina</em>. Para lo que hacés, presente simple: <em>I work at a school, I live in Buenos Aires</em>. Truco: armá tu \"guion de vida\" con estas frases y decilo en voz alta hasta que salga solo.",
+ phrases:[
+  {en:"Hi, nice to meet you.",es:"Hola, encantado/a de conocerte."},
+  {en:"I'm from Argentina.",es:"Soy de Argentina."},
+  {en:"I live in Buenos Aires.",es:"Vivo en Buenos Aires."},
+  {en:"I work at a school.",es:"Trabajo en una escuela."},
+  {en:"I'm learning English.",es:"Estoy aprendiendo inglés."},
+  {en:"I have two children.",es:"Tengo dos hijos."},
+  {en:"I really like music.",es:"Me gusta mucho la música."},
+  {en:"I've been working there for five years.",es:"Trabajo ahí desde hace cinco años."},
+  {en:"What about you?",es:"¿Y vos?"},
+  {en:"See you later!",es:"¡Nos vemos!"}],
+ prompts:[
+  {en:"Introduce yourself: name, city and job.",es:"Presentate: nombre, ciudad y trabajo."},
+  {en:"Talk about your family for 30 seconds.",es:"Hablá de tu familia durante 30 segundos."},
+  {en:"Say three things you like.",es:"Decí tres cosas que te gustan."}]},
+{n:2,m:1,title:"Tu rutina",goal:"Contar tu día usando presente simple y expresiones de frecuencia.",
+ tip:"<h3>Mini-lección</h3>El presente simple describe hábitos: <em>I get up at seven</em>. Las palabras de frecuencia van antes del verbo: <em>I <b>usually</b> have coffee, I <b>never</b> work on Sundays</em>. Truco de la semana: mientras hacés tu rutina, narrala en inglés en tu cabeza (\"Now I'm having breakfast\").",
+ phrases:[
+  {en:"I usually get up at seven.",es:"Normalmente me levanto a las siete."},
+  {en:"I have breakfast with my family.",es:"Desayuno con mi familia."},
+  {en:"I go to work by bus.",es:"Voy al trabajo en colectivo."},
+  {en:"I start work at eight o'clock.",es:"Empiezo a trabajar a las ocho."},
+  {en:"I have lunch at noon.",es:"Almuerzo al mediodía."},
+  {en:"On Mondays I have meetings.",es:"Los lunes tengo reuniones."},
+  {en:"In the evening I watch TV.",es:"A la noche miro televisión."},
+  {en:"I go to bed late.",es:"Me acuesto tarde."},
+  {en:"I never work on Sundays.",es:"Nunca trabajo los domingos."},
+  {en:"Once a week I do exercise.",es:"Una vez por semana hago ejercicio."}],
+ prompts:[
+  {en:"Describe your typical morning.",es:"Describí una mañana típica tuya."},
+  {en:"What do you do on weekends?",es:"¿Qué hacés los fines de semana?"},
+  {en:"Describe your whole day, from morning to night.",es:"Contá tu día completo, de la mañana a la noche."}]},
+{n:3,m:1,title:"Hacer preguntas",goal:"Dominar las preguntas básicas: la conversación es preguntar.",
+ tip:"<h3>Mini-lección</h3>Las preguntas en presente usan <em>do/does</em>: <em>Do you like your job? What do you do?</em> Con el verbo <em>to be</em> se invierte: <em>Where are you from?</em> Truco: en cualquier charla, el que pregunta controla la conversación con la mitad del esfuerzo.",
+ phrases:[
+  {en:"What do you do?",es:"¿A qué te dedicás?"},
+  {en:"Where are you from?",es:"¿De dónde sos?"},
+  {en:"Where do you live?",es:"¿Dónde vivís?"},
+  {en:"Do you have any kids?",es:"¿Tenés hijos?"},
+  {en:"Do you like your job?",es:"¿Te gusta tu trabajo?"},
+  {en:"How old are you?",es:"¿Cuántos años tenés?"},
+  {en:"How long have you lived there?",es:"¿Hace cuánto vivís ahí?"},
+  {en:"What do you do in your free time?",es:"¿Qué hacés en tu tiempo libre?"},
+  {en:"Can you help me, please?",es:"¿Me podés ayudar, por favor?"},
+  {en:"What time is it?",es:"¿Qué hora es?"}],
+ prompts:[
+  {en:"Ask five questions to get to know someone.",es:"Hacé cinco preguntas para conocer a alguien."},
+  {en:"Imagine you meet a tourist. Ask about their trip.",es:"Imaginá que conocés a un turista. Preguntale por su viaje."},
+  {en:"Answer out loud: What do you do? Where do you live?",es:"Respondé en voz alta: ¿a qué te dedicás? ¿dónde vivís?"}]},
+{n:4,m:1,title:"Situaciones básicas",goal:"Sobrevivir en un bar, un negocio o la calle — y pedir que te repitan.",
+ tip:"<h3>Mini-lección</h3>Las frases de cortesía usan <em>could</em> y <em>would</em>: <em>Could you say that again? I'd like a coffee</em>. Son fórmulas fijas: no las analices, memorizalas como bloques. <b>Checkpoint del mes:</b> grabate 3 minutos presentándote y guardá el audio para comparar en el mes 4.",
+ phrases:[
+  {en:"Could you say that again, please?",es:"¿Podrías repetir eso, por favor?"},
+  {en:"What does this word mean?",es:"¿Qué significa esta palabra?"},
+  {en:"Can you speak more slowly?",es:"¿Podés hablar más despacio?"},
+  {en:"I'd like a coffee, please.",es:"Quisiera un café, por favor."},
+  {en:"How much is it?",es:"¿Cuánto cuesta?"},
+  {en:"Can I pay by card?",es:"¿Puedo pagar con tarjeta?"},
+  {en:"Excuse me, where is the bathroom?",es:"Disculpá, ¿dónde está el baño?"},
+  {en:"How do I get to the station?",es:"¿Cómo llego a la estación?"},
+  {en:"I don't understand.",es:"No entiendo."},
+  {en:"The check, please.",es:"La cuenta, por favor."}],
+ prompts:[
+  {en:"Order a full meal at a restaurant.",es:"Pedí una comida completa en un restaurante."},
+  {en:"Ask for directions to a museum.",es:"Pedí indicaciones para llegar a un museo."},
+  {en:"Record yourself: introduce yourself for 3 minutes.",es:"Grabate: presentate durante 3 minutos (checkpoint del mes)."}]},
+{n:5,m:2,title:"Hablar en pasado",goal:"Contar qué hiciste ayer con los verbos irregulares más usados.",
+ tip:"<h3>Mini-lección</h3>Los verbos irregulares más frecuentes hay que sabérselos de memoria: <em>go→went, see→saw, have→had, say→said, make→made, take→took, come→came, get→got</em>. La negación usa <em>didn't</em> + verbo base: <em>I didn't sleep well</em>. Ritual diario: antes de dormir, contá en voz alta tres cosas que hiciste hoy.",
+ phrases:[
+  {en:"Yesterday I went to work early.",es:"Ayer fui a trabajar temprano."},
+  {en:"I saw a great movie last night.",es:"Anoche vi una película buenísima."},
+  {en:"I had a very busy day.",es:"Tuve un día muy ocupado."},
+  {en:"She said something funny.",es:"Ella dijo algo gracioso."},
+  {en:"We made dinner together.",es:"Hicimos la cena juntos."},
+  {en:"I took the bus this morning.",es:"Tomé el colectivo esta mañana."},
+  {en:"They came to my house.",es:"Vinieron a mi casa."},
+  {en:"I got home late.",es:"Llegué tarde a casa."},
+  {en:"I didn't sleep well.",es:"No dormí bien."},
+  {en:"Did you have a good weekend?",es:"¿Tuviste un buen fin de semana?"}],
+ prompts:[
+  {en:"Say three things you did yesterday.",es:"Decí tres cosas que hiciste ayer."},
+  {en:"What did you do last weekend?",es:"¿Qué hiciste el fin de semana pasado?"},
+  {en:"Talk about the last movie or series you watched.",es:"Hablá de la última película o serie que viste."}]},
+{n:6,m:2,title:"Contar historias",goal:"Narrar una anécdota completa usando conectores.",
+ tip:"<h3>Mini-lección</h3>Una historia se sostiene con conectores: <em>first, then, after that, suddenly, finally</em>. Para el fondo de la escena usá pasado continuo: <em>I <b>was walking</b> home <b>when</b> I saw him</em> (estaba caminando cuando...). Practicá contando la misma anécdota varias veces: cada repetición sale más fluida.",
+ phrases:[
+  {en:"First, we went to the beach.",es:"Primero fuimos a la playa."},
+  {en:"Then we had lunch by the sea.",es:"Después almorzamos junto al mar."},
+  {en:"After that, we walked around town.",es:"Después de eso, paseamos por el pueblo."},
+  {en:"Suddenly, it started to rain.",es:"De repente, empezó a llover."},
+  {en:"Finally, we went back to the hotel.",es:"Finalmente, volvimos al hotel."},
+  {en:"It was an amazing day.",es:"Fue un día increíble."},
+  {en:"You won't believe what happened.",es:"No vas a creer lo que pasó."},
+  {en:"I was walking home when I saw him.",es:"Estaba caminando a casa cuando lo vi."},
+  {en:"Luckily, nothing bad happened.",es:"Por suerte, no pasó nada malo."},
+  {en:"To make a long story short...",es:"Para hacerla corta..."}],
+ prompts:[
+  {en:"Tell the story of a trip you loved.",es:"Contá la historia de un viaje que te encantó."},
+  {en:"Tell a funny thing that happened to you.",es:"Contá algo gracioso que te pasó."},
+  {en:"Tell the same story again, but faster.",es:"Contá la misma historia otra vez, pero más rápido."}]},
+{n:7,m:2,title:"Planes y futuro",goal:"Hablar de lo que viene: planes, deseos y promesas.",
+ tip:"<h3>Mini-lección</h3>Tres formas de futuro: <em>going to</em> para planes decididos (<em>I'm going to visit my parents</em>), <em>will</em> para decisiones del momento y promesas (<em>I'll call you</em>), y <em>I'd like to</em> para deseos (<em>I'd like to travel</em>). El presente continuo también sirve para citas ya arregladas: <em>We're meeting at six</em>.",
+ phrases:[
+  {en:"I'm going to visit my parents.",es:"Voy a visitar a mis padres."},
+  {en:"I'll call you tomorrow.",es:"Te llamo mañana."},
+  {en:"I'd like to travel to Europe.",es:"Me gustaría viajar a Europa."},
+  {en:"What are you doing this weekend?",es:"¿Qué hacés este fin de semana?"},
+  {en:"I'm planning to study English every day.",es:"Planeo estudiar inglés todos los días."},
+  {en:"I hope to get a better job.",es:"Espero conseguir un trabajo mejor."},
+  {en:"Next year I want to speak fluently.",es:"El año que viene quiero hablar con fluidez."},
+  {en:"We're meeting at six.",es:"Nos encontramos a las seis."},
+  {en:"I'll let you know.",es:"Te aviso."},
+  {en:"Don't worry, it'll be fine.",es:"No te preocupes, va a estar todo bien."}],
+ prompts:[
+  {en:"What are your plans for this weekend?",es:"¿Cuáles son tus planes para este fin de semana?"},
+  {en:"Talk about a dream trip you'd like to take.",es:"Hablá de un viaje soñado que te gustaría hacer."},
+  {en:"What are your goals for next year?",es:"¿Cuáles son tus metas para el año que viene?"}]},
+{n:8,m:2,title:"Dar tu opinión",goal:"Opinar, acordar y disentir con fórmulas simples.",
+ tip:"<h3>Mini-lección</h3>Para opinar: <em>I think..., In my opinion..., For me...</em> Para acordar o disentir: <em>I agree / I don't agree, actually</em>. Suavizá el desacuerdo con <em>actually</em> o <em>I'm not sure about that</em>. <b>Checkpoint del mes:</b> grabate contando una anécdota de 3 minutos en pasado y comparala con tu audio del mes 1.",
+ phrases:[
+  {en:"I think it's a great idea.",es:"Creo que es una gran idea."},
+  {en:"In my opinion, it's too expensive.",es:"En mi opinión, es demasiado caro."},
+  {en:"I agree with you.",es:"Estoy de acuerdo con vos."},
+  {en:"I don't agree, actually.",es:"En realidad, no estoy de acuerdo."},
+  {en:"What do you think about it?",es:"¿Qué pensás al respecto?"},
+  {en:"For me, family comes first.",es:"Para mí, la familia está primero."},
+  {en:"I'm not sure about that.",es:"No estoy seguro/a de eso."},
+  {en:"That makes sense.",es:"Tiene sentido."},
+  {en:"Good point!",es:"¡Buen punto!"},
+  {en:"It depends on the situation.",es:"Depende de la situación."}],
+ prompts:[
+  {en:"Is it better to live in a city or a small town? Why?",es:"¿Es mejor vivir en una ciudad o en un pueblo? ¿Por qué?"},
+  {en:"Give your opinion about social media.",es:"Da tu opinión sobre las redes sociales."},
+  {en:"Record your monthly checkpoint: a 3-minute story in the past.",es:"Grabá tu checkpoint del mes: una anécdota de 3 minutos en pasado."}]},
+{n:9,m:3,title:"Desarrollar ideas",goal:"Hablar 2 minutos seguidos de un tema con la técnica 4-3-2.",
+ tip:"<h3>Mini-lección</h3>Técnica <b>4-3-2</b>: elegí un tema, hablá 4 minutos, después repetí lo mismo en 3, y después en 2. Te obliga a ganar velocidad sin cambiar el contenido. Estas frases te ayudan a estirar y ordenar ideas: <em>The thing is..., For example..., On the one hand... on the other hand...</em>",
+ phrases:[
+  {en:"The thing is, I don't have time.",es:"La cuestión es que no tengo tiempo."},
+  {en:"For example, last week I was sick.",es:"Por ejemplo, la semana pasada estuve enfermo/a."},
+  {en:"What I mean is, we need a plan.",es:"Lo que quiero decir es que necesitamos un plan."},
+  {en:"On the one hand, it's cheaper.",es:"Por un lado, es más barato."},
+  {en:"On the other hand, it takes longer.",es:"Por otro lado, lleva más tiempo."},
+  {en:"Another thing is the weather.",es:"Otra cosa es el clima."},
+  {en:"In other words, it's not easy.",es:"En otras palabras, no es fácil."},
+  {en:"That's why I prefer the train.",es:"Por eso prefiero el tren."},
+  {en:"As I was saying...",es:"Como decía..."},
+  {en:"And that's the main reason.",es:"Y esa es la razón principal."}],
+ prompts:[
+  {en:"4-3-2: talk about your job (4 min, then 3, then 2).",es:"4-3-2: hablá de tu trabajo (4 min, después 3, después 2)."},
+  {en:"4-3-2: talk about your city.",es:"4-3-2: hablá de tu ciudad."},
+  {en:"Give two reasons why you're learning English.",es:"Da dos razones por las que estás aprendiendo inglés."}]},
+{n:10,m:3,title:"Inglés real",goal:"Entender y usar los phrasal verbs de todos los días.",
+ tip:"<h3>Mini-lección</h3>Los <em>phrasal verbs</em> (verbo + partícula) dominan el inglés hablado real: <em>find out</em> (averiguar), <em>figure out</em> (resolver/entender), <em>come up with</em> (ocurrírsele algo), <em>run out of</em> (quedarse sin), <em>give up</em> (rendirse). No los traduzcas palabra por palabra: aprendé la frase entera. Esta semana escuchá los audios a velocidad normal.",
+ phrases:[
+  {en:"I need to find out what happened.",es:"Necesito averiguar qué pasó."},
+  {en:"I can't figure it out.",es:"No logro resolverlo."},
+  {en:"She came up with a great idea.",es:"A ella se le ocurrió una gran idea."},
+  {en:"Can you turn down the music?",es:"¿Podés bajar la música?"},
+  {en:"I ran out of coffee.",es:"Me quedé sin café."},
+  {en:"Let's get together soon.",es:"Juntémonos pronto."},
+  {en:"I'm looking forward to the weekend.",es:"Tengo muchas ganas de que llegue el finde."},
+  {en:"It turns out he was right.",es:"Resulta que él tenía razón."},
+  {en:"I gave up sugar last month.",es:"Dejé el azúcar el mes pasado."},
+  {en:"Don't give up!",es:"¡No te rindas!"}],
+ prompts:[
+  {en:"Use \"find out\" and \"figure out\" in two sentences about your week.",es:"Usá \"find out\" y \"figure out\" en dos frases sobre tu semana."},
+  {en:"Talk about something you gave up and why.",es:"Hablá de algo que dejaste y por qué."},
+  {en:"What are you looking forward to?",es:"¿Qué estás esperando con ganas?"}]},
+{n:11,m:3,title:"Sonar fluido",goal:"Usar muletillas para ganar tiempo y no quedarte en silencio.",
+ tip:"<h3>Mini-lección</h3>Los nativos no hablan sin pausas: las llenan con <em>well..., you know..., I mean..., actually..., let me think...</em> Estas muletillas te compran 2-3 segundos para pensar sin cortar la conversación. Son la diferencia entre sonar trabado y sonar fluido, aunque sepas las mismas palabras.",
+ phrases:[
+  {en:"Well, let me think...",es:"Bueno, dejame pensar..."},
+  {en:"You know what I mean?",es:"¿Entendés lo que digo?"},
+  {en:"Actually, that's not what I said.",es:"En realidad, eso no es lo que dije."},
+  {en:"I mean, it's complicated.",es:"O sea, es complicado."},
+  {en:"How can I say this...",es:"Cómo puedo decir esto..."},
+  {en:"Anyway, let's change the subject.",es:"En fin, cambiemos de tema."},
+  {en:"To be honest, I didn't like it.",es:"Para ser honesto/a, no me gustó."},
+  {en:"By the way, how's your family?",es:"Por cierto, ¿cómo está tu familia?"},
+  {en:"That's a good question.",es:"Esa es una buena pregunta."},
+  {en:"Give me a second.",es:"Dame un segundo."}],
+ prompts:[
+  {en:"Answer using a filler first: Do you like your city?",es:"Respondé arrancando con una muletilla: ¿te gusta tu ciudad?"},
+  {en:"Talk about a difficult topic using \"how can I say this...\"",es:"Hablá de un tema difícil usando \"how can I say this...\""},
+  {en:"Change the subject twice using \"anyway\" and \"by the way\".",es:"Cambiá de tema dos veces usando \"anyway\" y \"by the way\"."}]},
+{n:12,m:3,title:"Parafrasear",goal:"Describir cualquier palabra que no sabés — la habilidad n.º 1 de la fluidez.",
+ tip:"<h3>Mini-lección</h3>Cuando te falta una palabra, no frenes: describila. <em>It's a thing you use to... / It's a kind of... / It's the opposite of... / It's someone who...</em> Juego de la semana: elegí 5 objetos de tu casa y describilos en inglés sin decir su nombre. <b>Checkpoint del mes:</b> mantené una conversación de 20 minutos (con la app o grabándote) y anotá tus 5 errores más repetidos.",
+ phrases:[
+  {en:"It's a thing you use to open bottles.",es:"Es una cosa que usás para abrir botellas."},
+  {en:"It's similar to a lemon, but sweeter.",es:"Es parecido a un limón, pero más dulce."},
+  {en:"What's the word for this in English?",es:"¿Cuál es la palabra para esto en inglés?"},
+  {en:"It's the opposite of expensive.",es:"Es lo contrario de caro."},
+  {en:"It's a kind of fruit.",es:"Es un tipo de fruta."},
+  {en:"I forget the word, but it's like a small house.",es:"Me olvido la palabra, pero es como una casa chica."},
+  {en:"It's someone who takes care of patients.",es:"Es alguien que cuida pacientes."},
+  {en:"It's a place where you buy medicine.",es:"Es un lugar donde comprás remedios."},
+  {en:"How do you say \"heladera\" in English?",es:"¿Cómo se dice \"heladera\" en inglés?"},
+  {en:"You use it for cooking.",es:"Lo usás para cocinar."}],
+ prompts:[
+  {en:"Describe a \"tenedor\" without saying the word fork.",es:"Describí un tenedor sin decir \"fork\"."},
+  {en:"Describe your favorite food without naming it.",es:"Describí tu comida favorita sin nombrarla."},
+  {en:"Describe three objects around you right now.",es:"Describí tres objetos que tengas cerca ahora."}]},
+{n:13,m:4,title:"Inglés para el trabajo",goal:"Manejar reuniones, llamadas y coordinación laboral.",
+ tip:"<h3>Mini-lección</h3>El inglés laboral es muy formulaico — perfecto para memorizar bloques: <em>Can we schedule...? / I'll get back to you / Does that work for you?</em> Simulacro de la semana: en la práctica de habla, imaginá que estás en una reunión real de tu trabajo y respondé las consignas como si fuera en serio.",
+ phrases:[
+  {en:"Can we schedule a meeting for Monday?",es:"¿Podemos agendar una reunión para el lunes?"},
+  {en:"I'll send you the report today.",es:"Te envío el informe hoy."},
+  {en:"Let's move on to the next point.",es:"Pasemos al siguiente punto."},
+  {en:"Sorry, I have another call.",es:"Perdón, tengo otra llamada."},
+  {en:"Could you share your screen?",es:"¿Podrías compartir tu pantalla?"},
+  {en:"I'll get back to you tomorrow.",es:"Te respondo mañana."},
+  {en:"We're running out of time.",es:"Se nos acaba el tiempo."},
+  {en:"Does that work for you?",es:"¿Te queda bien?"},
+  {en:"Let me check my calendar.",es:"Dejame revisar mi calendario."},
+  {en:"Thanks for your time.",es:"Gracias por tu tiempo."}],
+ prompts:[
+  {en:"Describe your job and your main tasks.",es:"Describí tu trabajo y tus tareas principales."},
+  {en:"Simulate opening a meeting: greet and present the agenda.",es:"Simulá abrir una reunión: saludá y presentá el temario."},
+  {en:"Reschedule a meeting: propose a new day and time.",es:"Reprogramá una reunión: proponé nuevo día y hora."}]},
+{n:14,m:4,title:"Errores típicos",goal:"Eliminar los errores clásicos de los hispanohablantes.",
+ tip:"<h3>Mini-lección</h3>Los clásicos: la edad va con <em>to be</em> (<em>I'm 35</em>, nunca \"I have 35 years\"); <em>people</em> es plural (<em>people <b>are</b></em>); es <em>depend <b>on</b></em> (no \"of\") y <em>married <b>to</b></em> (no \"with\"); <em>sensible</em> en inglés significa \"sensato\" — sensible se dice <em>sensitive</em>. Esta semana el quiz te va a exigir precisión: tolerancia cero con estos errores.",
+ phrases:[
+  {en:"I'm 35 years old.",es:"Tengo 35 años."},
+  {en:"People are very friendly here.",es:"La gente es muy amable acá."},
+  {en:"It depends on the weather.",es:"Depende del clima."},
+  {en:"I'm married to a teacher.",es:"Estoy casado/a con un/a docente."},
+  {en:"I've lived here for ten years.",es:"Vivo acá desde hace diez años."},
+  {en:"She's very sensitive.",es:"Ella es muy sensible."},
+  {en:"I'm looking for my keys.",es:"Estoy buscando mis llaves."},
+  {en:"Everybody knows the answer.",es:"Todos saben la respuesta."},
+  {en:"I did my homework.",es:"Hice mi tarea."},
+  {en:"I'm interested in art.",es:"Me interesa el arte."}],
+ prompts:[
+  {en:"Say your age, how long you've lived in your city, and what you're interested in.",es:"Decí tu edad, hace cuánto vivís en tu ciudad y qué te interesa."},
+  {en:"Talk about the people in your neighborhood.",es:"Hablá de la gente de tu barrio."},
+  {en:"Review your recordings: which mistakes do you repeat?",es:"Escuchá tus grabaciones: ¿qué errores repetís?"}]},
+{n:15,m:4,title:"Semana de inmersión",goal:"Pensar en inglés: narrar tu vida cotidiana en tiempo real.",
+ tip:"<h3>Mini-lección</h3>Esta semana, todo lo que puedas en inglés: el celular en inglés, notas en inglés, y sobre todo <b>narración interna</b>: mientras hacés cualquier cosa, contala en tu cabeza (<em>Now I'm making coffee... I should answer that email...</em>). Es la técnica más barata y efectiva para automatizar el idioma.",
+ phrases:[
+  {en:"Now I'm making coffee.",es:"Ahora estoy preparando café."},
+  {en:"I should answer that email.",es:"Debería responder ese mail."},
+  {en:"Where did I leave my phone?",es:"¿Dónde dejé mi teléfono?"},
+  {en:"It's getting late.",es:"Se está haciendo tarde."},
+  {en:"I need to buy bread on my way home.",es:"Tengo que comprar pan camino a casa."},
+  {en:"The traffic is terrible today.",es:"El tránsito está terrible hoy."},
+  {en:"I can't wait for the weekend.",es:"No veo la hora de que llegue el finde."},
+  {en:"Let me write that down.",es:"Dejame anotar eso."},
+  {en:"What was I going to say?",es:"¿Qué iba a decir?"},
+  {en:"One step at a time.",es:"Un paso a la vez."}],
+ prompts:[
+  {en:"Narrate what you're doing right now, for one minute.",es:"Narrá lo que estás haciendo ahora mismo, durante un minuto."},
+  {en:"Describe everything you see around you.",es:"Describí todo lo que ves a tu alrededor."},
+  {en:"Plan your tomorrow out loud, in English.",es:"Planificá tu día de mañana en voz alta, en inglés."}]},
+{n:16,m:4,title:"Evaluación final",goal:"Medir tu progreso y cerrar el ciclo: comparar con la semana 1.",
+ tip:"<h3>Mini-lección</h3>Semana de cierre: repasá las frases que más te costaron, grabate 5 minutos hablando de vos, tu trabajo y tus planes, y comparalo con tu grabación del mes 1 — la diferencia te va a sorprender. Si querés un número oficial, hacé el test gratuito EF SET. Y lo más importante: definí tu próxima meta, porque esto es solo el comienzo.",
+ phrases:[
+  {en:"Let me tell you about myself.",es:"Dejame contarte sobre mí."},
+  {en:"Over the last four months, I've learned a lot.",es:"En los últimos cuatro meses, aprendí mucho."},
+  {en:"At first, it was really hard.",es:"Al principio, fue muy difícil."},
+  {en:"Little by little, I improved.",es:"De a poco, mejoré."},
+  {en:"Now I can hold a conversation.",es:"Ahora puedo mantener una conversación."},
+  {en:"My next goal is to speak fluently.",es:"Mi próxima meta es hablar con fluidez."},
+  {en:"I practice speaking every week.",es:"Practico el habla todas las semanas."},
+  {en:"Making mistakes is part of learning.",es:"Cometer errores es parte de aprender."},
+  {en:"I'm proud of my progress.",es:"Estoy orgulloso/a de mi progreso."},
+  {en:"This is just the beginning.",es:"Esto es solo el comienzo."}],
+ prompts:[
+  {en:"Final test: talk about yourself, your job and your plans for 5 minutes.",es:"Test final: hablá de vos, tu trabajo y tus planes durante 5 minutos."},
+  {en:"What was the hardest part of these four months?",es:"¿Qué fue lo más difícil de estos cuatro meses?"},
+  {en:"What's your next goal with English?",es:"¿Cuál es tu próxima meta con el inglés?"}]}
+];
+const MODULES = [
+  {id:"learn", name:"Aprender", sub:"Frases nuevas con tarjetas", ico:"📖"},
+  {id:"quiz", name:"Quiz", sub:"Elegí la traducción correcta", ico:"✅"},
+  {id:"listen", name:"Escuchá", sub:"Escribí lo que escuchás", ico:"🎧"},
+  {id:"order", name:"Armá la frase", sub:"Ordená las palabras", ico:"🧩"},
+  {id:"speak", name:"Hablá", sub:"Repetí y respondé en voz alta", ico:"🎤"},
+];
+
+/* ================= STATE ================= */
+const KEY = "rutaIngles16";
+let S = load();
+function load(){
+  try{ const raw = localStorage.getItem(KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return {weeks:{}, rate:0.9, free:false};
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function wk(n){ if(!S.weeks[n]) S.weeks[n]={}; return S.weeks[n]; }
+function modDone(n,m){ return !!wk(n)[m]; }
+function weekDone(n){ return MODULES.every(mo=>modDone(n,mo.id)); }
+function weekUnlocked(n){ return n===1 || S.free || weekDone(n-1); }
+function totalPct(){
+  let d=0; WEEKS.forEach(w=>MODULES.forEach(mo=>{ if(modDone(w.n,mo.id)) d++; }));
+  return Math.round(100*d/(WEEKS.length*MODULES.length));
+}
+
+/* ================= AUDIO / SPEECH ================= */
+let VOICE=null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices().filter(v=>v.lang && v.lang.toLowerCase().startsWith("en"));
+  VOICE = vs.find(v=>/en[-_]us/i.test(v.lang)) || vs[0] || null;
+}
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, rate){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US"; if(VOICE) u.voice = VOICE;
+  u.rate = rate || S.rate;
+  speechSynthesis.speak(u);
+}
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+function listenOnce(onResult, onEnd){
+  const r = new SR();
+  r.lang="en-US"; r.interimResults=false; r.maxAlternatives=1;
+  let got=false;
+  r.onresult = e=>{ got=true; onResult(e.results[0][0].transcript); };
+  r.onerror = ()=>{ if(!got) onResult(null); };
+  r.onend = ()=>{ if(!got) onResult(null); if(onEnd) onEnd(); };
+  try{ r.start(); }catch(e){ onResult(null); }
+  return r;
+}
+
+/* ================= TEXT UTILS ================= */
+function norm(s){
+  return s.toLowerCase()
+    .replace(/[’']/g,"'")
+    .replace(/[.,!?;:"“”¿¡()]/g,"")
+    .replace(/\s+/g," ").trim();
+}
+function lev(a,b){
+  const m=a.length,n=b.length;
+  if(!m) return n; if(!n) return m;
+  let prev = Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){
+    const cur=[i];
+    for(let j=1;j<=n;j++)
+      cur[j] = Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    prev=cur;
+  }
+  return prev[n];
+}
+function similarity(a,b){
+  a=norm(a); b=norm(b);
+  if(!a||!b) return 0;
+  return 1 - lev(a,b)/Math.max(a.length,b.length);
+}
+function wordOverlap(target, said){
+  const t = norm(target).split(" ");
+  const s = new Set(norm(said).split(" "));
+  let hit=0; t.forEach(w=>{ if(s.has(w)) hit++; });
+  return hit/t.length;
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+/* ================= RENDER ================= */
+const app = document.getElementById("app");
+function refreshGlobal(){
+  const p = totalPct();
+  document.getElementById("gbar").style.width = p+"%";
+  document.getElementById("gpct").textContent = p+"%";
+}
+function goHome(){ renderHome(); window.scrollTo(0,0); }
+
+function renderHome(){
+  refreshGlobal();
+  const done = WEEKS.filter(w=>weekDone(w.n)).length;
+  const learned = WEEKS.reduce((acc,w)=> acc + (modDone(w.n,"learn") ? w.phrases.length : 0), 0);
+  let html = `
+  <div class="hero">
+    <div class="eyebrow">Tu tutor personal · 4 hs semanales</div>
+    <h1>De básico a conversación en 16 semanas</h1>
+    <p class="lede">Una ruta guiada para aprender a <b>hablar</b> inglés: frases reales, quizzes, escucha con audio y práctica de habla con tu micrófono. Todo acá, a tu ritmo.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>${done}/16</b><span>semanas completas</span></div>
+    <div class="stat"><b>${learned}</b><span>frases aprendidas</span></div>
+    <div class="stat"><b>${totalPct()}%</b><span>de la ruta</span></div>
+  </div>`;
+  MONTHS.forEach(mo=>{
+    html += `<section class="month">
+      <div class="month-h"><span class="mn">Mes ${mo.n} — ${mo.title}</span><span class="mt">${mo.sub}</span></div>
+      <div class="weeks">`;
+    WEEKS.filter(w=>w.m===mo.n).forEach(w=>{
+      const unlocked = weekUnlocked(w.n);
+      const dots = MODULES.map(m=>`<span class="dot ${modDone(w.n,m.id)?"on":""}"></span>`).join("");
+      const state = weekDone(w.n) ? "✔" : unlocked ? "›" : "🔒";
+      html += `<button class="week-row" data-w="${w.n}" ${unlocked?"":"disabled"} aria-label="Semana ${w.n}: ${esc(w.title)}${unlocked?"":" (bloqueada)"}">
+        <span class="wnum">${w.n}</span>
+        <span class="wmain"><span class="wtitle">${esc(w.title)}</span><br><span class="wgoal">${esc(w.goal)}</span><span class="dots" style="margin-top:5px">${dots}</span></span>
+        <span class="wstate" style="color:${weekDone(w.n)?"var(--ok)":"var(--muted)"}">${state}</span>
+      </button>`;
+    });
+    html += `</div></section>`;
+  });
+  html += `<section class="method">
+    <h2>Cómo usar tu ruta (4 horas por semana)</h2>
+    <ol>
+      <li><b>Aprender + Quiz</b> (1 h, repartida en dos días): incorporá las 10 frases de la semana.</li>
+      <li><b>Escuchá + Armá la frase</b> (1 h): entrená el oído y la estructura.</li>
+      <li><b>Hablá</b> (1 h): repetí cada frase en voz alta y respondé las consignas con el micrófono. Es el bloque más importante.</li>
+      <li><b>Repaso libre</b> (1 h): volvé a las semanas anteriores, repetí los quizzes y grabate los checkpoints de las semanas 4, 8, 12 y 16.</li>
+    </ol>
+    <p class="note">Regla de oro: todo en voz alta. Leer sin hablar no cuenta. Una semana se desbloquea al completar la anterior (podés activar el modo libre en ⚙).</p>
+  </section>`;
+  app.innerHTML = html;
+  app.querySelectorAll(".week-row:not(:disabled)").forEach(b=>b.addEventListener("click",()=>renderWeek(+b.dataset.w)));
+}
+
+function renderWeek(n){
+  refreshGlobal();
+  const w = WEEKS.find(x=>x.n===n);
+  let html = `<button class="back" id="back">‹ Volver a la ruta</button>
+  <div class="wk-head">
+    <div class="eyebrow">Mes ${w.m} · Semana ${w.n}</div>
+    <h2>${esc(w.title)}</h2>
+  </div>
+  <div class="goalbox"><b>Meta de la semana:</b> ${esc(w.goal)}</div>
+  <div class="tip">${w.tip}</div>
+  <div class="mods">`;
+  MODULES.forEach(m=>{
+    const d = modDone(n,m.id);
+    html += `<button class="mod-row ${d?"done":""}" data-m="${m.id}">
+      <span class="mod-ico">${d?"✔":m.ico}</span>
+      <span><span class="mod-name">${m.name}</span><br><span class="mod-sub">${m.sub}</span></span>
+      ${d?'<span class="mod-check">Completado</span>':""}
+    </button>`;
+  });
+  html += `</div>`;
+  app.innerHTML = html;
+  document.getElementById("back").addEventListener("click",goHome);
+  app.querySelectorAll(".mod-row").forEach(b=>b.addEventListener("click",()=>{
+    const id=b.dataset.m;
+    ({learn:runLearn,quiz:runQuiz,listen:runListen,order:runOrder,speak:runSpeak})[id](w);
+  }));
+  window.scrollTo(0,0);
+}
+
+function exShell(w, title, inner){
+  app.innerHTML = `<button class="back" id="back">‹ Semana ${w.n}</button>
+  <div class="ex-top"><span class="ex-title">${title}</span><span class="ex-prog" id="exprog"></span></div>
+  <div class="pbar"><div id="expbar" style="width:0%"></div></div>
+  <div class="card" id="exbody">${inner||""}</div>`;
+  document.getElementById("back").addEventListener("click",()=>renderWeek(w.n));
+  window.scrollTo(0,0);
+  return {
+    body: document.getElementById("exbody"),
+    prog: (i,total)=>{ document.getElementById("exprog").textContent = `${i}/${total}`;
+      document.getElementById("expbar").style.width = (100*i/total)+"%"; }
+  };
+}
+function finishModule(w, modId, msg){
+  wk(w.n)[modId]=true; save(); refreshGlobal();
+  const ui = exShell(w, "¡Listo!");
+  const allDone = weekDone(w.n);
+  ui.body.innerHTML = `<div class="exd center">
+    <div style="font-size:2.2rem">🎉</div>
+    <div class="result-big">${msg}</div>
+    ${allDone?`<p>Completaste la <b>semana ${w.n}</b>. ${w.n<16?"Se desbloqueó la semana "+(w.n+1)+".":"¡Terminaste la ruta completa!"}</p>`:""}
+    <div class="row">
+      <button class="btn" id="cont">${allDone && w.n<16 ? "Ir a la semana "+(w.n+1) : "Seguir con la semana"}</button>
+      <button class="btn ghost" id="home2">Ver la ruta</button>
+    </div></div>`;
+  document.getElementById("cont").addEventListener("click",()=> (allDone && w.n<16) ? renderWeek(w.n+1) : renderWeek(w.n));
+  document.getElementById("home2").addEventListener("click",goHome);
+}
+function retryScreen(w, modId, score, need, total, runAgain){
+  const ui = exShell(w, "Casi...");
+  ui.body.innerHTML = `<div class="exd center">
+    <div class="result-big">${score}/${total} correctas</div>
+    <p>Necesitás ${need} para completar el módulo. ¡Repasá las frases y probá de nuevo — así se aprende!</p>
+    <div class="row"><button class="btn" id="again">Intentar de nuevo</button>
+    <button class="btn ghost" id="bk">Volver a la semana</button></div></div>`;
+  document.getElementById("again").addEventListener("click",()=>runAgain(w));
+  document.getElementById("bk").addEventListener("click",()=>renderWeek(w.n));
+}
+
+/* ---------- Módulo: Aprender (flashcards) ---------- */
+function runLearn(w){
+  let queue = shuffle(w.phrases.slice());
+  let seen = 0; const total = w.phrases.length;
+  const ui = exShell(w, "📖 Aprender");
+  function card(){
+    if(!queue.length) return finishModule(w,"learn","Aprendiste las "+total+" frases de la semana");
+    const p = queue[0];
+    ui.prog(Math.min(seen,total), total);
+    ui.body.innerHTML = `<div class="exd center">
+      <p class="phrase-es">${esc(p.es)}</p>
+      <p class="phrase-en" id="en" style="visibility:hidden">${esc(p.en)}</p>
+      <div class="row" id="controls">
+        <button class="btn" id="reveal">Ver en inglés</button>
+      </div></div>`;
+    document.getElementById("reveal").addEventListener("click",()=>{
+      document.getElementById("en").style.visibility="visible";
+      say(p.en);
+      document.getElementById("controls").innerHTML = `
+        <button class="btn sec" id="again">🔊 Escuchar de nuevo</button>
+        <button class="btn ghost" id="hard">Repasar después</button>
+        <button class="btn" id="know">La tengo ✓</button>`;
+      document.getElementById("again").addEventListener("click",()=>say(p.en,0.7));
+      document.getElementById("know").addEventListener("click",()=>{ queue.shift(); seen++; card(); });
+      document.getElementById("hard").addEventListener("click",()=>{ queue.push(queue.shift()); card(); });
+    });
+  }
+  card();
+}
+
+/* ---------- Módulo: Quiz ---------- */
+function runQuiz(w){
+  const items = shuffle(w.phrases.slice()).slice(0,8);
+  const NEED = 6;
+  let i=0, score=0;
+  const ui = exShell(w, "✅ Quiz");
+  function q(){
+    if(i>=items.length){
+      return score>=NEED ? finishModule(w,"quiz",`Quiz aprobado: ${score}/${items.length}`)
+                         : retryScreen(w,"quiz",score,NEED,items.length,runQuiz);
+    }
+    ui.prog(i, items.length);
+    const p = items[i];
+    const sameWeek = shuffle(w.phrases.filter(x=>x.en!==p.en)).slice(0,2);
+    const used = new Set([p.en, ...sameWeek.map(x=>x.en)]);
+    const pool = WEEKS.flatMap(x=>x.phrases).filter(x=>!used.has(x.en));
+    const distractors = sameWeek.concat(shuffle(pool).slice(0,1));
+    const opts = shuffle([p, ...distractors.slice(0,3)]);
+    ui.body.innerHTML = `<p class="phrase-es">¿Cómo se dice en inglés?</p>
+      <p class="phrase-en" style="font-size:1.2rem">${esc(p.es)}</p>
+      <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o.en)}</button>`).join("")}</div>
+      <div class="feedback" id="fb"></div>`;
+    ui.body.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      const chosen = opts[+b.dataset.k];
+      ui.body.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+      const fb = document.getElementById("fb");
+      if(chosen.en===p.en){ b.classList.add("right"); score++; fb.textContent="¡Correcta!"; fb.className="feedback ok"; }
+      else{
+        b.classList.add("wrong");
+        ui.body.querySelectorAll(".opt").forEach(x=>{ if(opts[+x.dataset.k].en===p.en) x.classList.add("right"); });
+        fb.textContent="La correcta era: "+p.en; fb.className="feedback bad";
+      }
+      say(p.en);
+      setTimeout(()=>{ i++; q(); }, 1700);
+    }));
+  }
+  q();
+}
+
+/* ---------- Módulo: Escuchá ---------- */
+function runListen(w){
+  const items = shuffle(w.phrases.slice()).slice(0,6);
+  const NEED = 4;
+  let i=0, score=0;
+  const ui = exShell(w, "🎧 Escuchá");
+  if(!("speechSynthesis" in window)){
+    ui.body.innerHTML = `<div class="exd center"><p>Tu navegador no tiene voz sintetizada. Probá con Chrome, Edge o Safari.</p>
+    <div class="row"><button class="btn ghost" id="bk">Volver</button></div></div>`;
+    document.getElementById("bk").addEventListener("click",()=>renderWeek(w.n));
+    return;
+  }
+  function q(){
+    if(i>=items.length){
+      return score>=NEED ? finishModule(w,"listen",`Buen oído: ${score}/${items.length}`)
+                         : retryScreen(w,"listen",score,NEED,items.length,runListen);
+    }
+    ui.prog(i, items.length);
+    const p = items[i];
+    ui.body.innerHTML = `<div class="exd">
+      <p class="phrase-es center">Escuchá y escribí la frase en inglés:</p>
+      <div class="row">
+        <button class="btn sec" id="play">🔊 Escuchar</button>
+        <button class="btn ghost" id="slow">🐢 Más lento</button>
+      </div>
+      <input type="text" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribí lo que escuchaste..." style="margin-top:14px">
+      <div class="feedback" id="fb"></div>
+      <div class="row"><button class="btn" id="check">Corregir</button></div>
+    </div>`;
+    const play=()=>say(p.en), slow=()=>say(p.en,0.6);
+    document.getElementById("play").addEventListener("click",play);
+    document.getElementById("slow").addEventListener("click",slow);
+    setTimeout(play, 300);
+    const input = document.getElementById("ans");
+    input.focus();
+    let tries = 0;
+    function check(){
+      const val = input.value.trim();
+      if(!val) return;
+      const fb = document.getElementById("fb");
+      const sim = similarity(val, p.en);
+      if(sim >= 0.82){
+        score++; fb.textContent = "¡Muy bien! — "+p.en; fb.className="feedback ok";
+        next();
+      } else if(tries===0){
+        tries++; fb.textContent = "No exactamente... escuchá de nuevo y probá otra vez (te queda 1 intento)."; fb.className="feedback bad";
+        slow();
+      } else {
+        fb.textContent = "Era: "+p.en; fb.className="feedback bad";
+        say(p.en,0.7);
+        next();
+      }
+    }
+    function next(){
+      document.getElementById("check").disabled = true; input.disabled = true;
+      setTimeout(()=>{ i++; q(); }, 1800);
+    }
+    document.getElementById("check").addEventListener("click",check);
+    input.addEventListener("keydown",e=>{ if(e.key==="Enter") check(); });
+  }
+  q();
+}
+
+/* ---------- Módulo: Armá la frase ---------- */
+function runOrder(w){
+  const items = shuffle(w.phrases.filter(p=>{
+    const n=p.en.split(" ").length; return n>=4 && n<=9;
+  })).slice(0,6);
+  const NEED = Math.max(1, items.length-2);
+  let i=0, score=0;
+  const ui = exShell(w, "🧩 Armá la frase");
+  function q(){
+    if(i>=items.length){
+      return score>=NEED ? finishModule(w,"order",`Estructura dominada: ${score}/${items.length}`)
+                         : retryScreen(w,"order",score,NEED,items.length,runOrder);
+    }
+    ui.prog(i, items.length);
+    const p = items[i];
+    const words = p.en.split(" ");
+    let bank = shuffle(words.map((wd,k)=>({wd,k})));
+    // reshuffle if identical to the original order
+    if(bank.every((b,idx)=>b.k===idx) && words.length>1) bank = bank.slice(1).concat(bank[0]);
+    let placed = [];
+    ui.body.innerHTML = `<p class="phrase-es center">${esc(p.es)}</p>
+      <p class="note center" style="margin-bottom:14px">Tocá las palabras en orden:</p>
+      <div class="chips" id="target" aria-label="Tu frase"></div>
+      <div class="chips" id="bank" style="border-style:solid" aria-label="Palabras disponibles"></div>
+      <div class="feedback center" id="fb"></div>
+      <div class="row"><button class="btn" id="check" disabled>Corregir</button></div>`;
+    const target = document.getElementById("target"), bankEl = document.getElementById("bank");
+    function draw(){
+      target.innerHTML = placed.map((b,idx)=>`<button class="chip placed" data-i="${idx}">${esc(b.wd)}</button>`).join("");
+      bankEl.innerHTML = bank.map((b,idx)=>`<button class="chip" data-i="${idx}">${esc(b.wd)}</button>`).join("");
+      target.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ bank.push(placed.splice(+c.dataset.i,1)[0]); draw(); }));
+      bankEl.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ placed.push(bank.splice(+c.dataset.i,1)[0]); draw(); }));
+      document.getElementById("check").disabled = bank.length>0;
+    }
+    draw();
+    document.getElementById("check").addEventListener("click",()=>{
+      const fb = document.getElementById("fb");
+      const attempt = placed.map(b=>b.wd).join(" ");
+      if(attempt===p.en){ score++; fb.textContent="¡Perfecta!"; fb.className="feedback center ok"; }
+      else{ fb.textContent="Era: "+p.en; fb.className="feedback center bad"; }
+      say(p.en);
+      document.getElementById("check").disabled=true;
+      setTimeout(()=>{ i++; q(); }, 1800);
+    });
+  }
+  q();
+}
+
+/* ---------- Módulo: Hablá ---------- */
+function runSpeak(w){
+  const phrases = shuffle(w.phrases.slice()).slice(0,6);
+  const steps = phrases.map(p=>({type:"shadow",p})).concat(w.prompts.map(p=>({type:"prompt",p})));
+  let i=0;
+  const ui = exShell(w, "🎤 Hablá");
+  const hasSR = !!SR;
+  function step(){
+    if(i>=steps.length) return finishModule(w,"speak","Práctica de habla completada");
+    ui.prog(i, steps.length);
+    const st = steps[i];
+    if(st.type==="shadow"){
+      ui.body.innerHTML = `<div class="exd center">
+        <p class="phrase-es">${esc(st.p.es)}</p>
+        <p class="phrase-en">${esc(st.p.en)}</p>
+        <p class="note">Escuchala y repetila en voz alta, imitando el ritmo.</p>
+        <div class="row">
+          <button class="btn sec" id="play">🔊 Escuchar</button>
+          ${hasSR?'<button class="mic idle" id="mic" aria-label="Grabar">🎙</button>':""}
+        </div>
+        <div class="transcript" id="tr" ${hasSR?"":"hidden"}>${hasSR?"Tocá el micrófono y repetí la frase...":""}</div>
+        <div class="feedback center" id="fb"></div>
+        <div class="row">
+          ${hasSR?"":'<button class="btn sec" id="selfok">La dije bien ✓</button><button class="btn ghost" id="selfno">Me costó, repetir</button>'}
+          <button class="btn" id="next" ${hasSR?"disabled":""} hidden>Siguiente ›</button>
+        </div></div>`;
+      const play=()=>say(st.p.en);
+      document.getElementById("play").addEventListener("click",play);
+      setTimeout(play,300);
+      const nextBtn=document.getElementById("next");
+      if(hasSR){
+        const mic=document.getElementById("mic"), tr=document.getElementById("tr"), fb=document.getElementById("fb");
+        mic.addEventListener("click",()=>{
+          speechSynthesis.cancel();
+          mic.classList.remove("idle"); tr.textContent="Escuchando... hablá ahora";
+          listenOnce(text=>{
+            mic.classList.add("idle");
+            if(text===null){ tr.textContent="No te escuché — revisá el permiso del micrófono, o tocá y probá de nuevo."; nextBtn.hidden=false; nextBtn.disabled=false; return; }
+            tr.textContent = "“"+text+"”";
+            const ov = wordOverlap(st.p.en, text);
+            if(ov>=0.7){ fb.innerHTML='<span class="score-pill ok">¡Muy bien! 🎉</span>'; }
+            else if(ov>=0.4){ fb.innerHTML='<span class="score-pill mid">Casi — escuchala de nuevo y repetí</span>'; }
+            else{ fb.innerHTML='<span class="score-pill bad">Probá otra vez, más despacio</span>'; }
+            nextBtn.hidden=false; nextBtn.disabled=false;
+          });
+        });
+      } else {
+        document.getElementById("selfok").addEventListener("click",()=>{ i++; step(); });
+        document.getElementById("selfno").addEventListener("click",()=>{ say(st.p.en,0.7); });
+        nextBtn.hidden=true;
+      }
+      nextBtn.addEventListener("click",()=>{ i++; step(); });
+    } else {
+      ui.body.innerHTML = `<div class="exd center">
+        <div class="eyebrow" style="margin-bottom:6px">Consigna abierta</div>
+        <p class="phrase-en" style="font-size:1.25rem">${esc(st.p.en)}</p>
+        <p class="phrase-es">${esc(st.p.es)}</p>
+        <p class="note">Respondé en voz alta, mínimo 30 segundos. No busques la perfección: comunicá.</p>
+        <div class="row">
+          <button class="btn sec" id="play">🔊 Escuchar la consigna</button>
+          ${hasSR?'<button class="mic idle" id="mic" aria-label="Grabar">🎙</button>':""}
+        </div>
+        <div class="transcript" id="tr" ${hasSR?"":"hidden"}>${hasSR?"Tocá el micrófono y respondé — vas a ver lo que dijiste acá.":""}</div>
+        <div class="row"><button class="btn" id="next">Hecho, siguiente ›</button></div>
+      </div>`;
+      document.getElementById("play").addEventListener("click",()=>say(st.p.en));
+      if(hasSR){
+        const mic=document.getElementById("mic"), tr=document.getElementById("tr");
+        mic.addEventListener("click",()=>{
+          speechSynthesis.cancel();
+          mic.classList.remove("idle"); tr.textContent="Escuchando... hablá ahora";
+          listenOnce(text=>{
+            mic.classList.add("idle");
+            tr.textContent = text===null ? "No te escuché — probá de nuevo." : "“"+text+"”";
+          });
+        });
+      }
+      document.getElementById("next").addEventListener("click",()=>{ i++; step(); });
+    }
+  }
+  step();
+}
+
+/* ================= SETTINGS ================= */
+const dlg = document.getElementById("setDlg");
+document.getElementById("gearBtn").addEventListener("click",()=>{ syncDlg(); dlg.showModal(); });
+document.getElementById("closeDlg").addEventListener("click",()=>dlg.close());
+function syncDlg(){
+  document.querySelectorAll("#rateSeg button").forEach(b=>b.classList.toggle("on", +b.dataset.r===S.rate));
+  document.querySelectorAll("#freeSeg button").forEach(b=>b.classList.toggle("on", (+b.dataset.f===1)===S.free));
+}
+document.querySelectorAll("#rateSeg button").forEach(b=>b.addEventListener("click",()=>{ S.rate=+b.dataset.r; save(); syncDlg(); say("Hello! How are you today?"); }));
+document.querySelectorAll("#freeSeg button").forEach(b=>b.addEventListener("click",()=>{ S.free=(+b.dataset.f===1); save(); syncDlg(); }));
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("¿Seguro? Se borra todo tu progreso.")){ S={weeks:{},rate:0.9,free:false}; save(); dlg.close(); goHome(); }
+});
+document.getElementById("homeBtn").addEventListener("click",goHome);
+
+renderHome();
+</script>
