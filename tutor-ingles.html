@@ -122,6 +122,16 @@
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
   .note{font-size:.8rem;color:var(--muted)}
   .result-big{font-family:var(--serif);font-size:1.6rem;font-weight:600;margin:10px 0}
+  .review-card{margin-top:16px;background:linear-gradient(135deg,var(--primary-deep),var(--primary));color:#fff;border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .review-card .rc-main{flex:1;min-width:200px}
+  .review-card h2{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin:0 0 3px}
+  .review-card p{margin:0;font-size:.85rem;opacity:.85}
+  .review-card .btn{background:#fff;color:var(--primary-deep)}
+  .review-card .btn:hover{background:var(--soft)}
+  .review-card .btn:disabled{opacity:.6}
+  .boxes{display:flex;gap:3px;margin-top:8px}
+  .boxes span{height:6px;border-radius:3px;background:rgba(255,255,255,.25);flex:1;max-width:44px}
+  .boxes span.f{background:#8FD3B8}
   .method{margin-top:34px}
   .method h2{font-family:var(--serif);font-size:1.2rem;font-weight:600;border-bottom:2px solid var(--primary);padding-bottom:6px}
   .method ol{padding-left:20px;margin:10px 0;font-size:.92rem;color:var(--ink)}
@@ -450,6 +460,11 @@ const MODULES = [
   {id:"speak", name:"Hablá", sub:"Repetí y respondé en voz alta", ico:"🎤"},
 ];
 
+/* ================= REPASO INTELIGENTE (Leitner) ================= */
+WEEKS.forEach(w=>w.phrases.forEach((p,i)=>{ p.key = w.n+":"+i; p.week = w.n; }));
+const DAY = 86400000;
+const BOX_DAYS = [1,2,4,8,16]; // días hasta el próximo repaso según la caja (1-5)
+
 /* ================= STATE ================= */
 const KEY = "rutaIngles16";
 let S = load();
@@ -465,6 +480,31 @@ function weekUnlocked(n){ return n===1 || S.free || weekDone(n-1); }
 function totalPct(){
   let d=0; WEEKS.forEach(w=>MODULES.forEach(mo=>{ if(modDone(w.n,mo.id)) d++; }));
   return Math.round(100*d/(WEEKS.length*MODULES.length));
+}
+function items(){ if(!S.items) S.items={}; return S.items; }
+function recordResult(p, ok){
+  const it = items()[p.key] || {b:0, due:0};
+  if(ok){ it.b = Math.min((it.b||0)+1, 5); it.due = Date.now() + BOX_DAYS[it.b-1]*DAY; }
+  else  { it.b = 1; it.due = Date.now(); }
+  items()[p.key] = it; save();
+}
+function seedWeek(w){
+  w.phrases.forEach(p=>{ if(!items()[p.key]) items()[p.key] = {b:1, due:Date.now()+DAY}; });
+  save();
+}
+function allPhrases(){ return WEEKS.flatMap(w=>w.phrases); }
+function duePhrases(){
+  const now = Date.now(), it = items();
+  return allPhrases().filter(p=>it[p.key] && it[p.key].due<=now)
+    .sort((a,b)=> it[a.key].b - it[b.key].b || it[a.key].due - it[b.key].due);
+}
+function reviewStats(){
+  const it = items();
+  const tracked = allPhrases().filter(p=>it[p.key]);
+  const mastered = tracked.filter(p=>it[p.key].b>=4).length;
+  let nextDue = null;
+  tracked.forEach(p=>{ if(nextDue===null || it[p.key].due<nextDue) nextDue = it[p.key].due; });
+  return {tracked:tracked.length, mastered, due:duePhrases().length, nextDue};
 }
 
 /* ================= AUDIO / SPEECH ================= */
@@ -555,6 +595,17 @@ function renderHome(){
     <div class="stat"><b>${learned}</b><span>frases aprendidas</span></div>
     <div class="stat"><b>${totalPct()}%</b><span>de la ruta</span></div>
   </div>`;
+  const rs = reviewStats();
+  const pctMastered = rs.tracked ? Math.round(10*rs.mastered/rs.tracked) : 0;
+  let rcMsg, rcBtn;
+  if(rs.tracked===0){ rcMsg = "Empezá el módulo Aprender de la semana 1 y tus frases entran acá solas."; rcBtn = ""; }
+  else if(rs.due>0){ rcMsg = `Tenés <b>${rs.due} frase${rs.due===1?"":"s"}</b> esperándote hoy. Las que te cuestan vuelven seguido; las que dominás, cada vez menos.`; rcBtn = `<button class="btn" id="reviewBtn">Repasar ahora (${Math.min(rs.due,12)})</button>`; }
+  else { const days = Math.max(1, Math.ceil((rs.nextDue-Date.now())/DAY)); rcMsg = `Todo al día ✓ — ${rs.mastered} de ${rs.tracked} frases dominadas. Próximo repaso ${days===1?"mañana":"en "+days+" días"}.`; rcBtn = `<button class="btn" disabled>Nada para repasar</button>`; }
+  html += `<section class="review-card">
+    <div class="rc-main"><h2>🔄 Repaso inteligente</h2><p>${rcMsg}</p>
+    <div class="boxes" aria-label="Frases dominadas">${Array.from({length:10},(_,k)=>`<span class="${k<pctMastered?"f":""}"></span>`).join("")}</div></div>
+    ${rcBtn}
+  </section>`;
   MONTHS.forEach(mo=>{
     html += `<section class="month">
       <div class="month-h"><span class="mn">Mes ${mo.n} — ${mo.title}</span><span class="mt">${mo.sub}</span></div>
@@ -577,12 +628,14 @@ function renderHome(){
       <li><b>Aprender + Quiz</b> (1 h, repartida en dos días): incorporá las 10 frases de la semana.</li>
       <li><b>Escuchá + Armá la frase</b> (1 h): entrená el oído y la estructura.</li>
       <li><b>Hablá</b> (1 h): repetí cada frase en voz alta y respondé las consignas con el micrófono. Es el bloque más importante.</li>
-      <li><b>Repaso libre</b> (1 h): volvé a las semanas anteriores, repetí los quizzes y grabate los checkpoints de las semanas 4, 8, 12 y 16.</li>
+      <li><b>Repaso inteligente</b> (1 h, repartida en el resto de la semana): la app registra cada frase que acertás o fallás y te las trae de vuelta justo cuando estás por olvidarlas. Además, grabate los checkpoints de las semanas 4, 8, 12 y 16.</li>
     </ol>
     <p class="note">Regla de oro: todo en voz alta. Leer sin hablar no cuenta. Una semana se desbloquea al completar la anterior (podés activar el modo libre en ⚙).</p>
   </section>`;
   app.innerHTML = html;
   app.querySelectorAll(".week-row:not(:disabled)").forEach(b=>b.addEventListener("click",()=>renderWeek(+b.dataset.w)));
+  const rb = document.getElementById("reviewBtn");
+  if(rb) rb.addEventListener("click", runReview);
 }
 
 function renderWeek(n){
@@ -615,11 +668,11 @@ function renderWeek(n){
 }
 
 function exShell(w, title, inner){
-  app.innerHTML = `<button class="back" id="back">‹ Semana ${w.n}</button>
+  app.innerHTML = `<button class="back" id="back">‹ ${w?"Semana "+w.n:"Volver a la ruta"}</button>
   <div class="ex-top"><span class="ex-title">${title}</span><span class="ex-prog" id="exprog"></span></div>
   <div class="pbar"><div id="expbar" style="width:0%"></div></div>
   <div class="card" id="exbody">${inner||""}</div>`;
-  document.getElementById("back").addEventListener("click",()=>renderWeek(w.n));
+  document.getElementById("back").addEventListener("click",()=> w ? renderWeek(w.n) : goHome());
   window.scrollTo(0,0);
   return {
     body: document.getElementById("exbody"),
@@ -659,7 +712,7 @@ function runLearn(w){
   let seen = 0; const total = w.phrases.length;
   const ui = exShell(w, "📖 Aprender");
   function card(){
-    if(!queue.length) return finishModule(w,"learn","Aprendiste las "+total+" frases de la semana");
+    if(!queue.length){ seedWeek(w); return finishModule(w,"learn","Aprendiste las "+total+" frases de la semana"); }
     const p = queue[0];
     ui.prog(Math.min(seen,total), total);
     ui.body.innerHTML = `<div class="exd center">
@@ -708,6 +761,7 @@ function runQuiz(w){
     ui.body.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
       const chosen = opts[+b.dataset.k];
       ui.body.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+      recordResult(p, chosen.en===p.en);
       const fb = document.getElementById("fb");
       if(chosen.en===p.en){ b.classList.add("right"); score++; fb.textContent="¡Correcta!"; fb.className="feedback ok"; }
       else{
@@ -764,12 +818,13 @@ function runListen(w){
       const fb = document.getElementById("fb");
       const sim = similarity(val, p.en);
       if(sim >= 0.82){
-        score++; fb.textContent = "¡Muy bien! — "+p.en; fb.className="feedback ok";
+        score++; recordResult(p,true); fb.textContent = "¡Muy bien! — "+p.en; fb.className="feedback ok";
         next();
       } else if(tries===0){
         tries++; fb.textContent = "No exactamente... escuchá de nuevo y probá otra vez (te queda 1 intento)."; fb.className="feedback bad";
         slow();
       } else {
+        recordResult(p,false);
         fb.textContent = "Era: "+p.en; fb.className="feedback bad";
         say(p.en,0.7);
         next();
@@ -823,6 +878,7 @@ function runOrder(w){
     document.getElementById("check").addEventListener("click",()=>{
       const fb = document.getElementById("fb");
       const attempt = placed.map(b=>b.wd).join(" ");
+      recordResult(p, attempt===p.en);
       if(attempt===p.en){ score++; fb.textContent="¡Perfecta!"; fb.className="feedback center ok"; }
       else{ fb.textContent="Era: "+p.en; fb.className="feedback center bad"; }
       say(p.en);
@@ -873,14 +929,14 @@ function runSpeak(w){
             if(text===null){ tr.textContent="No te escuché — revisá el permiso del micrófono, o tocá y probá de nuevo."; nextBtn.hidden=false; nextBtn.disabled=false; return; }
             tr.textContent = "“"+text+"”";
             const ov = wordOverlap(st.p.en, text);
-            if(ov>=0.7){ fb.innerHTML='<span class="score-pill ok">¡Muy bien! 🎉</span>'; }
+            if(ov>=0.7){ recordResult(st.p,true); fb.innerHTML='<span class="score-pill ok">¡Muy bien! 🎉</span>'; }
             else if(ov>=0.4){ fb.innerHTML='<span class="score-pill mid">Casi — escuchala de nuevo y repetí</span>'; }
-            else{ fb.innerHTML='<span class="score-pill bad">Probá otra vez, más despacio</span>'; }
+            else{ recordResult(st.p,false); fb.innerHTML='<span class="score-pill bad">Probá otra vez, más despacio</span>'; }
             nextBtn.hidden=false; nextBtn.disabled=false;
           });
         });
       } else {
-        document.getElementById("selfok").addEventListener("click",()=>{ i++; step(); });
+        document.getElementById("selfok").addEventListener("click",()=>{ recordResult(st.p,true); i++; step(); });
         document.getElementById("selfno").addEventListener("click",()=>{ say(st.p.en,0.7); });
         nextBtn.hidden=true;
       }
@@ -914,6 +970,181 @@ function runSpeak(w){
     }
   }
   step();
+}
+
+/* ---------- Repaso inteligente ---------- */
+function reviewType(p){
+  const b = items()[p.key].b || 1;
+  const nWords = p.en.split(" ").length;
+  if(b<=1) return "flash";
+  if(b===2) return "mc";
+  if(b===3) return (nWords>=4 && nWords<=9) ? "order" : "mc";
+  if(b>=5 && SR) return "speak";
+  return ("speechSynthesis" in window) ? "listen" : "mc";
+}
+function runReview(){
+  const session = duePhrases().slice(0,12);
+  if(!session.length) return goHome();
+  let i=0, right=0;
+  const ui = exShell(null, "🔄 Repaso inteligente");
+  function grade(ok){ recordResult(session[i], ok); if(ok) right++; i++; step(); }
+  function step(){
+    if(i>=session.length){
+      refreshGlobal();
+      const left = duePhrases().length;
+      ui.prog(session.length, session.length);
+      ui.body.innerHTML = `<div class="exd center">
+        <div style="font-size:2.2rem">${right>=session.length*0.7?"🎉":"💪"}</div>
+        <div class="result-big">${right}/${session.length} correctas</div>
+        <p>${right===session.length?"Impecable — esas frases van a tardar más en volver.":"Las que fallaste vuelven a la cola de hoy: repetirlas es exactamente cómo se fijan."}</p>
+        <div class="row">
+          ${left>0?`<button class="btn" id="more">Seguir repasando (${Math.min(left,12)})</button>`:""}
+          <button class="btn ${left>0?"ghost":""}" id="home3">Volver a la ruta</button>
+        </div></div>`;
+      const more = document.getElementById("more");
+      if(more) more.addEventListener("click", runReview);
+      document.getElementById("home3").addEventListener("click", goHome);
+      return;
+    }
+    ui.prog(i, session.length);
+    const p = session[i];
+    ({flash:rvFlash, mc:rvMC, order:rvOrder, listen:rvListen, speak:rvSpeak})[reviewType(p)](ui, p, grade);
+  }
+  step();
+}
+function rvFlash(ui, p, done){
+  ui.body.innerHTML = `<div class="exd center">
+    <p class="phrase-es">¿Cómo se dice?</p>
+    <p class="phrase-en" style="font-size:1.2rem">${esc(p.es)}</p>
+    <p class="phrase-en" id="en" style="visibility:hidden">${esc(p.en)}</p>
+    <div class="row" id="controls"><button class="btn" id="reveal">Ver la respuesta</button></div></div>`;
+  document.getElementById("reveal").addEventListener("click",()=>{
+    document.getElementById("en").style.visibility="visible";
+    say(p.en);
+    document.getElementById("controls").innerHTML = `
+      <button class="btn ghost" id="no">No me acordaba</button>
+      <button class="btn" id="yes">La sabía ✓</button>`;
+    document.getElementById("yes").addEventListener("click",()=>done(true));
+    document.getElementById("no").addEventListener("click",()=>done(false));
+  });
+}
+function rvMC(ui, p, done){
+  const sameWeek = shuffle(WEEKS.find(x=>x.n===p.week).phrases.filter(x=>x.en!==p.en)).slice(0,2);
+  const used = new Set([p.en, ...sameWeek.map(x=>x.en)]);
+  const pool = allPhrases().filter(x=>!used.has(x.en));
+  const opts = shuffle([p, ...sameWeek, ...shuffle(pool).slice(0,1)].slice(0,4));
+  ui.body.innerHTML = `<p class="phrase-es">¿Cómo se dice en inglés?</p>
+    <p class="phrase-en" style="font-size:1.2rem">${esc(p.es)}</p>
+    <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o.en)}</button>`).join("")}</div>
+    <div class="feedback" id="fb"></div>`;
+  ui.body.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+    const ok = opts[+b.dataset.k].en===p.en;
+    ui.body.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+    const fb = document.getElementById("fb");
+    if(ok){ b.classList.add("right"); fb.textContent="¡Correcta!"; fb.className="feedback ok"; }
+    else{
+      b.classList.add("wrong");
+      ui.body.querySelectorAll(".opt").forEach(x=>{ if(opts[+x.dataset.k].en===p.en) x.classList.add("right"); });
+      fb.textContent="La correcta era: "+p.en; fb.className="feedback bad";
+    }
+    say(p.en);
+    setTimeout(()=>done(ok), 1700);
+  }));
+}
+function rvOrder(ui, p, done){
+  const words = p.en.split(" ");
+  let bank = shuffle(words.map((wd,k)=>({wd,k})));
+  if(bank.every((b,idx)=>b.k===idx) && words.length>1) bank = bank.slice(1).concat(bank[0]);
+  let placed = [];
+  ui.body.innerHTML = `<p class="phrase-es center">${esc(p.es)}</p>
+    <p class="note center" style="margin-bottom:14px">Tocá las palabras en orden:</p>
+    <div class="chips" id="target"></div>
+    <div class="chips" id="bank" style="border-style:solid"></div>
+    <div class="feedback center" id="fb"></div>
+    <div class="row"><button class="btn" id="check" disabled>Corregir</button></div>`;
+  const target = document.getElementById("target"), bankEl = document.getElementById("bank");
+  function draw(){
+    target.innerHTML = placed.map((b,idx)=>`<button class="chip placed" data-i="${idx}">${esc(b.wd)}</button>`).join("");
+    bankEl.innerHTML = bank.map((b,idx)=>`<button class="chip" data-i="${idx}">${esc(b.wd)}</button>`).join("");
+    target.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ bank.push(placed.splice(+c.dataset.i,1)[0]); draw(); }));
+    bankEl.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ placed.push(bank.splice(+c.dataset.i,1)[0]); draw(); }));
+    document.getElementById("check").disabled = bank.length>0;
+  }
+  draw();
+  document.getElementById("check").addEventListener("click",()=>{
+    const ok = placed.map(b=>b.wd).join(" ")===p.en;
+    const fb = document.getElementById("fb");
+    fb.textContent = ok ? "¡Perfecta!" : "Era: "+p.en;
+    fb.className = "feedback center "+(ok?"ok":"bad");
+    say(p.en);
+    document.getElementById("check").disabled=true;
+    setTimeout(()=>done(ok), 1800);
+  });
+}
+function rvListen(ui, p, done){
+  ui.body.innerHTML = `<div class="exd">
+    <p class="phrase-es center">Escuchá y escribí la frase en inglés:</p>
+    <div class="row">
+      <button class="btn sec" id="play">🔊 Escuchar</button>
+      <button class="btn ghost" id="slow">🐢 Más lento</button>
+    </div>
+    <input type="text" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribí lo que escuchaste..." style="margin-top:14px">
+    <div class="feedback" id="fb"></div>
+    <div class="row"><button class="btn" id="check">Corregir</button></div></div>`;
+  const play=()=>say(p.en), slow=()=>say(p.en,0.6);
+  document.getElementById("play").addEventListener("click",play);
+  document.getElementById("slow").addEventListener("click",slow);
+  setTimeout(play, 300);
+  const input = document.getElementById("ans");
+  input.focus();
+  let tries = 0;
+  function check(){
+    const val = input.value.trim();
+    if(!val) return;
+    const fb = document.getElementById("fb");
+    if(similarity(val, p.en) >= 0.82){
+      fb.textContent = "¡Muy bien! — "+p.en; fb.className="feedback ok"; end(true);
+    } else if(tries===0){
+      tries++; fb.textContent = "No exactamente... probá una vez más."; fb.className="feedback bad"; slow();
+    } else {
+      fb.textContent = "Era: "+p.en; fb.className="feedback bad"; say(p.en,0.7); end(false);
+    }
+  }
+  function end(ok){
+    document.getElementById("check").disabled = true; input.disabled = true;
+    setTimeout(()=>done(ok), 1800);
+  }
+  document.getElementById("check").addEventListener("click",check);
+  input.addEventListener("keydown",e=>{ if(e.key==="Enter") check(); });
+}
+function rvSpeak(ui, p, done){
+  ui.body.innerHTML = `<div class="exd center">
+    <p class="phrase-es">Decilo en inglés, en voz alta:</p>
+    <p class="phrase-en" style="font-size:1.2rem">${esc(p.es)}</p>
+    <p class="phrase-en" id="en" style="visibility:hidden">${esc(p.en)}</p>
+    <div class="row"><button class="mic idle" id="mic" aria-label="Grabar">🎙</button></div>
+    <div class="transcript" id="tr">Tocá el micrófono y decí la frase en inglés...</div>
+    <div class="feedback center" id="fb"></div>
+    <div class="row" id="controls"></div></div>`;
+  const mic=document.getElementById("mic"), tr=document.getElementById("tr"), fb=document.getElementById("fb");
+  function finishWith(ok){
+    document.getElementById("en").style.visibility="visible";
+    say(p.en);
+    document.getElementById("controls").innerHTML = `<button class="btn" id="next">Siguiente ›</button>`;
+    document.getElementById("next").addEventListener("click",()=>done(ok));
+  }
+  mic.addEventListener("click",()=>{
+    speechSynthesis.cancel();
+    mic.classList.remove("idle"); tr.textContent="Escuchando... hablá ahora";
+    listenOnce(text=>{
+      mic.classList.add("idle");
+      if(text===null){ tr.textContent="No te escuché — probá de nuevo, o pasá con el botón."; finishWith(false); return; }
+      tr.textContent = "“"+text+"”";
+      const ov = wordOverlap(p.en, text);
+      if(ov>=0.6){ fb.innerHTML='<span class="score-pill ok">¡Muy bien! 🎉</span>'; finishWith(true); }
+      else{ fb.innerHTML='<span class="score-pill bad">No era exactamente así</span>'; finishWith(false); }
+    });
+  });
 }
 
 /* ================= SETTINGS ================= */
