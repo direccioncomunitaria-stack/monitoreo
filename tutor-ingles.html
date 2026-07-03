@@ -83,6 +83,12 @@
   .mod-name{font-weight:600;font-size:.95rem}
   .mod-sub{font-size:.78rem;color:var(--muted)}
   .mod-check{margin-left:auto;color:var(--ok);font-weight:700}
+  .chat{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .bub{max-width:85%;padding:10px 14px;border-radius:14px;font-family:var(--serif);font-size:1.02rem}
+  .bub small{display:block;font-family:var(--sans);font-size:.72rem;opacity:.75;margin-top:3px}
+  .bub.a{background:var(--softer);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+  .bub.u{background:var(--primary);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .wlock{font-size:.75rem;color:var(--amber);font-weight:600}
 
   /* Exercise screens */
   .ex-top{display:flex;align-items:center;gap:12px;margin:6px 0 14px}
@@ -191,7 +197,17 @@ const WEEKS = [
   {en:"I really like music.",es:"Me gusta mucho la música."},
   {en:"I've been working there for five years.",es:"Trabajo ahí desde hace cinco años."},
   {en:"What about you?",es:"¿Y vos?"},
-  {en:"See you later!",es:"¡Nos vemos!"}],
+  {en:"See you later!",es:"¡Nos vemos!"},
+  {en:"How are you?",es:"¿Cómo estás?"},
+  {en:"I'm fine, thanks. And you?",es:"Estoy bien, gracias. ¿Y vos?"},
+  {en:"This is my friend Carla.",es:"Ella es mi amiga Carla."},
+  {en:"I'm a teacher.",es:"Soy docente."},
+  {en:"I'm married and I have a dog.",es:"Estoy casado/a y tengo un perro."},
+  {en:"My favorite food is pasta.",es:"Mi comida favorita es la pasta."},
+  {en:"I don't speak much English yet.",es:"Todavía no hablo mucho inglés."},
+  {en:"Sorry, I'm a little nervous.",es:"Perdón, estoy un poco nervioso/a."},
+  {en:"It was nice talking to you.",es:"Fue lindo hablar con vos."},
+  {en:"Have a nice day!",es:"¡Que tengas un buen día!"}],
  prompts:[
   {en:"Introduce yourself: name, city and job.",es:"Presentate: nombre, ciudad y trabajo."},
   {en:"Talk about your family for 30 seconds.",es:"Hablá de tu familia durante 30 segundos."},
@@ -208,7 +224,17 @@ const WEEKS = [
   {en:"In the evening I watch TV.",es:"A la noche miro televisión."},
   {en:"I go to bed late.",es:"Me acuesto tarde."},
   {en:"I never work on Sundays.",es:"Nunca trabajo los domingos."},
-  {en:"Once a week I do exercise.",es:"Una vez por semana hago ejercicio."}],
+  {en:"Once a week I do exercise.",es:"Una vez por semana hago ejercicio."},
+  {en:"I wake up before my kids.",es:"Me despierto antes que mis hijos."},
+  {en:"I take a shower in the morning.",es:"Me baño a la mañana."},
+  {en:"I check my email after breakfast.",es:"Reviso el mail después del desayuno."},
+  {en:"I finish work at five.",es:"Termino de trabajar a las cinco."},
+  {en:"I usually cook dinner at night.",es:"Normalmente cocino la cena a la noche."},
+  {en:"I sometimes read before bed.",es:"A veces leo antes de dormir."},
+  {en:"On Fridays we order pizza.",es:"Los viernes pedimos pizza."},
+  {en:"I always drink coffee in the morning.",es:"Siempre tomo café a la mañana."},
+  {en:"I don't have much free time.",es:"No tengo mucho tiempo libre."},
+  {en:"My days are very busy.",es:"Mis días son muy ocupados."}],
  prompts:[
   {en:"Describe your typical morning.",es:"Describí una mañana típica tuya."},
   {en:"What do you do on weekends?",es:"¿Qué hacés los fines de semana?"},
@@ -225,7 +251,17 @@ const WEEKS = [
   {en:"How long have you lived there?",es:"¿Hace cuánto vivís ahí?"},
   {en:"What do you do in your free time?",es:"¿Qué hacés en tu tiempo libre?"},
   {en:"Can you help me, please?",es:"¿Me podés ayudar, por favor?"},
-  {en:"What time is it?",es:"¿Qué hora es?"}],
+  {en:"What time is it?",es:"¿Qué hora es?"},
+  {en:"What's your name?",es:"¿Cómo te llamás?"},
+  {en:"Where do you work?",es:"¿Dónde trabajás?"},
+  {en:"What time do you get up?",es:"¿A qué hora te levantás?"},
+  {en:"Why are you learning English?",es:"¿Por qué estás aprendiendo inglés?"},
+  {en:"Who do you live with?",es:"¿Con quién vivís?"},
+  {en:"How was your day?",es:"¿Cómo estuvo tu día?"},
+  {en:"What kind of music do you like?",es:"¿Qué tipo de música te gusta?"},
+  {en:"Is this your first time here?",es:"¿Es tu primera vez acá?"},
+  {en:"Can I ask you a question?",es:"¿Te puedo hacer una pregunta?"},
+  {en:"What does that mean?",es:"¿Qué significa eso?"}],
  prompts:[
   {en:"Ask five questions to get to know someone.",es:"Hacé cinco preguntas para conocer a alguien."},
   {en:"Imagine you meet a tourist. Ask about their trip.",es:"Imaginá que conocés a un turista. Preguntale por su viaje."},
@@ -242,7 +278,17 @@ const WEEKS = [
   {en:"Excuse me, where is the bathroom?",es:"Disculpá, ¿dónde está el baño?"},
   {en:"How do I get to the station?",es:"¿Cómo llego a la estación?"},
   {en:"I don't understand.",es:"No entiendo."},
-  {en:"The check, please.",es:"La cuenta, por favor."}],
+  {en:"The check, please.",es:"La cuenta, por favor."},
+  {en:"A table for two, please.",es:"Una mesa para dos, por favor."},
+  {en:"Can I see the menu?",es:"¿Puedo ver el menú?"},
+  {en:"I'm just looking, thanks.",es:"Solo estoy mirando, gracias."},
+  {en:"Do you have this in another size?",es:"¿Tenés esto en otro talle?"},
+  {en:"Where can I buy a ticket?",es:"¿Dónde puedo comprar un boleto?"},
+  {en:"Is it far from here?",es:"¿Queda lejos de acá?"},
+  {en:"Turn left at the corner.",es:"Doblá a la izquierda en la esquina."},
+  {en:"It's next to the bank.",es:"Está al lado del banco."},
+  {en:"I need help, please.",es:"Necesito ayuda, por favor."},
+  {en:"Keep the change.",es:"Quedate con el vuelto."}],
  prompts:[
   {en:"Order a full meal at a restaurant.",es:"Pedí una comida completa en un restaurante."},
   {en:"Ask for directions to a museum.",es:"Pedí indicaciones para llegar a un museo."},
@@ -259,7 +305,17 @@ const WEEKS = [
   {en:"They came to my house.",es:"Vinieron a mi casa."},
   {en:"I got home late.",es:"Llegué tarde a casa."},
   {en:"I didn't sleep well.",es:"No dormí bien."},
-  {en:"Did you have a good weekend?",es:"¿Tuviste un buen fin de semana?"}],
+  {en:"Did you have a good weekend?",es:"¿Tuviste un buen fin de semana?"},
+  {en:"I woke up very early.",es:"Me desperté muy temprano."},
+  {en:"I forgot my keys at home.",es:"Me olvidé las llaves en casa."},
+  {en:"We talked for hours.",es:"Hablamos durante horas."},
+  {en:"I bought bread and milk.",es:"Compré pan y leche."},
+  {en:"He told me a secret.",es:"Me contó un secreto."},
+  {en:"I found a great restaurant.",es:"Encontré un restaurante buenísimo."},
+  {en:"We ate too much.",es:"Comimos demasiado."},
+  {en:"I lost my phone yesterday.",es:"Ayer perdí mi teléfono."},
+  {en:"She gave me a present.",es:"Ella me dio un regalo."},
+  {en:"It was a long week.",es:"Fue una semana larga."}],
  prompts:[
   {en:"Say three things you did yesterday.",es:"Decí tres cosas que hiciste ayer."},
   {en:"What did you do last weekend?",es:"¿Qué hiciste el fin de semana pasado?"},
@@ -276,7 +332,17 @@ const WEEKS = [
   {en:"You won't believe what happened.",es:"No vas a creer lo que pasó."},
   {en:"I was walking home when I saw him.",es:"Estaba caminando a casa cuando lo vi."},
   {en:"Luckily, nothing bad happened.",es:"Por suerte, no pasó nada malo."},
-  {en:"To make a long story short...",es:"Para hacerla corta..."}],
+  {en:"To make a long story short...",es:"Para hacerla corta..."},
+  {en:"Last summer we traveled to the coast.",es:"El verano pasado viajamos a la costa."},
+  {en:"At the beginning, everything was fine.",es:"Al principio, todo estaba bien."},
+  {en:"While we were driving, the car broke down.",es:"Mientras manejábamos, el auto se rompió."},
+  {en:"Nobody knew what to do.",es:"Nadie sabía qué hacer."},
+  {en:"A man stopped to help us.",es:"Un hombre paró para ayudarnos."},
+  {en:"In the end, everything worked out.",es:"Al final, todo salió bien."},
+  {en:"It was the best day of the trip.",es:"Fue el mejor día del viaje."},
+  {en:"I'll never forget that moment.",es:"Nunca voy a olvidar ese momento."},
+  {en:"And then, guess what happened.",es:"Y entonces, adiviná qué pasó."},
+  {en:"We laughed all night.",es:"Nos reímos toda la noche."}],
  prompts:[
   {en:"Tell the story of a trip you loved.",es:"Contá la historia de un viaje que te encantó."},
   {en:"Tell a funny thing that happened to you.",es:"Contá algo gracioso que te pasó."},
@@ -293,7 +359,17 @@ const WEEKS = [
   {en:"Next year I want to speak fluently.",es:"El año que viene quiero hablar con fluidez."},
   {en:"We're meeting at six.",es:"Nos encontramos a las seis."},
   {en:"I'll let you know.",es:"Te aviso."},
-  {en:"Don't worry, it'll be fine.",es:"No te preocupes, va a estar todo bien."}],
+  {en:"Don't worry, it'll be fine.",es:"No te preocupes, va a estar todo bien."},
+  {en:"What time should we meet?",es:"¿A qué hora nos encontramos?"},
+  {en:"I'm taking a course next month.",es:"El mes que viene empiezo un curso."},
+  {en:"Are you free on Saturday?",es:"¿Estás libre el sábado?"},
+  {en:"Maybe we can have dinner together.",es:"Quizás podamos cenar juntos."},
+  {en:"I promise I'll practice every day.",es:"Prometo que voy a practicar todos los días."},
+  {en:"I can't make it tomorrow.",es:"Mañana no puedo."},
+  {en:"Let's leave it for next week.",es:"Dejémoslo para la semana que viene."},
+  {en:"I'm sure it'll work.",es:"Estoy seguro/a de que va a funcionar."},
+  {en:"What are you going to do after this?",es:"¿Qué vas a hacer después de esto?"},
+  {en:"Time will tell.",es:"El tiempo dirá."}],
  prompts:[
   {en:"What are your plans for this weekend?",es:"¿Cuáles son tus planes para este fin de semana?"},
   {en:"Talk about a dream trip you'd like to take.",es:"Hablá de un viaje soñado que te gustaría hacer."},
@@ -310,7 +386,17 @@ const WEEKS = [
   {en:"I'm not sure about that.",es:"No estoy seguro/a de eso."},
   {en:"That makes sense.",es:"Tiene sentido."},
   {en:"Good point!",es:"¡Buen punto!"},
-  {en:"It depends on the situation.",es:"Depende de la situación."}],
+  {en:"It depends on the situation.",es:"Depende de la situación."},
+  {en:"I totally agree.",es:"Totalmente de acuerdo."},
+  {en:"I see your point, but...",es:"Entiendo tu punto, pero..."},
+  {en:"That's exactly what I think.",es:"Eso es exactamente lo que pienso."},
+  {en:"I'd rather stay home.",es:"Prefiero quedarme en casa."},
+  {en:"To me, that's not fair.",es:"Para mí, eso no es justo."},
+  {en:"It's better than I expected.",es:"Es mejor de lo que esperaba."},
+  {en:"I have mixed feelings about it.",es:"Tengo sentimientos encontrados al respecto."},
+  {en:"Why do you think that?",es:"¿Por qué pensás eso?"},
+  {en:"Let's agree to disagree.",es:"Aceptemos que pensamos distinto."},
+  {en:"At the end of the day, it's your decision.",es:"Al final del día, es tu decisión."}],
  prompts:[
   {en:"Is it better to live in a city or a small town? Why?",es:"¿Es mejor vivir en una ciudad o en un pueblo? ¿Por qué?"},
   {en:"Give your opinion about social media.",es:"Da tu opinión sobre las redes sociales."},
@@ -327,7 +413,17 @@ const WEEKS = [
   {en:"In other words, it's not easy.",es:"En otras palabras, no es fácil."},
   {en:"That's why I prefer the train.",es:"Por eso prefiero el tren."},
   {en:"As I was saying...",es:"Como decía..."},
-  {en:"And that's the main reason.",es:"Y esa es la razón principal."}],
+  {en:"And that's the main reason.",es:"Y esa es la razón principal."},
+  {en:"Let me give you an example.",es:"Dejame darte un ejemplo."},
+  {en:"There are two reasons for that.",es:"Hay dos razones para eso."},
+  {en:"First of all, it's a matter of time.",es:"Antes que nada, es una cuestión de tiempo."},
+  {en:"Besides that, it's expensive.",es:"Además de eso, es caro."},
+  {en:"What's more, it takes practice.",es:"Es más, requiere práctica."},
+  {en:"To sum up, it's worth it.",es:"En resumen, vale la pena."},
+  {en:"It depends on how you see it.",es:"Depende de cómo lo mires."},
+  {en:"That's not always the case.",es:"No siempre es así."},
+  {en:"Let me put it another way.",es:"Dejame decirlo de otra manera."},
+  {en:"Does that make sense?",es:"¿Se entiende?"}],
  prompts:[
   {en:"4-3-2: talk about your job (4 min, then 3, then 2).",es:"4-3-2: hablá de tu trabajo (4 min, después 3, después 2)."},
   {en:"4-3-2: talk about your city.",es:"4-3-2: hablá de tu ciudad."},
@@ -344,7 +440,17 @@ const WEEKS = [
   {en:"I'm looking forward to the weekend.",es:"Tengo muchas ganas de que llegue el finde."},
   {en:"It turns out he was right.",es:"Resulta que él tenía razón."},
   {en:"I gave up sugar last month.",es:"Dejé el azúcar el mes pasado."},
-  {en:"Don't give up!",es:"¡No te rindas!"}],
+  {en:"Don't give up!",es:"¡No te rindas!"},
+  {en:"I woke up late and had to hurry up.",es:"Me desperté tarde y tuve que apurarme."},
+  {en:"Can you pick me up at eight?",es:"¿Me pasás a buscar a las ocho?"},
+  {en:"I need to drop off the kids at school.",es:"Tengo que dejar a los chicos en la escuela."},
+  {en:"The meeting was called off.",es:"La reunión se canceló."},
+  {en:"I'll look into it.",es:"Lo voy a investigar."},
+  {en:"We need to sort this out.",es:"Tenemos que resolver esto."},
+  {en:"I ended up staying home.",es:"Terminé quedándome en casa."},
+  {en:"Watch out!",es:"¡Cuidado!"},
+  {en:"I can't put up with this noise.",es:"No aguanto este ruido."},
+  {en:"Let me think it over.",es:"Dejame pensarlo."}],
  prompts:[
   {en:"Use \"find out\" and \"figure out\" in two sentences about your week.",es:"Usá \"find out\" y \"figure out\" en dos frases sobre tu semana."},
   {en:"Talk about something you gave up and why.",es:"Hablá de algo que dejaste y por qué."},
@@ -361,7 +467,17 @@ const WEEKS = [
   {en:"To be honest, I didn't like it.",es:"Para ser honesto/a, no me gustó."},
   {en:"By the way, how's your family?",es:"Por cierto, ¿cómo está tu familia?"},
   {en:"That's a good question.",es:"Esa es una buena pregunta."},
-  {en:"Give me a second.",es:"Dame un segundo."}],
+  {en:"Give me a second.",es:"Dame un segundo."},
+  {en:"To be fair, it's not that bad.",es:"Para ser justos, no está tan mal."},
+  {en:"That reminds me of something.",es:"Eso me hace acordar a algo."},
+  {en:"Believe it or not...",es:"Aunque no lo creas..."},
+  {en:"The funny thing is...",es:"Lo gracioso es que..."},
+  {en:"Don't get me wrong.",es:"No me malinterpretes."},
+  {en:"It's on the tip of my tongue.",es:"Lo tengo en la punta de la lengua."},
+  {en:"You know what? Let's do it.",es:"¿Sabés qué? Hagámoslo."},
+  {en:"I was just about to say that.",es:"Justo iba a decir eso."},
+  {en:"Now that you mention it...",es:"Ahora que lo mencionás..."},
+  {en:"Where were we?",es:"¿En qué estábamos?"}],
  prompts:[
   {en:"Answer using a filler first: Do you like your city?",es:"Respondé arrancando con una muletilla: ¿te gusta tu ciudad?"},
   {en:"Talk about a difficult topic using \"how can I say this...\"",es:"Hablá de un tema difícil usando \"how can I say this...\""},
@@ -378,7 +494,17 @@ const WEEKS = [
   {en:"It's someone who takes care of patients.",es:"Es alguien que cuida pacientes."},
   {en:"It's a place where you buy medicine.",es:"Es un lugar donde comprás remedios."},
   {en:"How do you say \"heladera\" in English?",es:"¿Cómo se dice \"heladera\" en inglés?"},
-  {en:"You use it for cooking.",es:"Lo usás para cocinar."}],
+  {en:"You use it for cooking.",es:"Lo usás para cocinar."},
+  {en:"It's something like a big spoon.",es:"Es algo así como una cuchara grande."},
+  {en:"It's made of glass.",es:"Está hecho de vidrio."},
+  {en:"You find it in the kitchen.",es:"Lo encontrás en la cocina."},
+  {en:"It's used for cutting paper.",es:"Se usa para cortar papel."},
+  {en:"It looks like a small ball.",es:"Parece una pelota chica."},
+  {en:"It sounds like \"table\".",es:"Suena como \"table\"."},
+  {en:"It's the thing that keeps food cold.",es:"Es la cosa que mantiene la comida fría."},
+  {en:"I don't remember the name, but you wear it in winter.",es:"No me acuerdo el nombre, pero se usa en invierno."},
+  {en:"It tastes like chicken.",es:"Tiene gusto a pollo."},
+  {en:"Am I explaining myself?",es:"¿Me explico?"}],
  prompts:[
   {en:"Describe a \"tenedor\" without saying the word fork.",es:"Describí un tenedor sin decir \"fork\"."},
   {en:"Describe your favorite food without naming it.",es:"Describí tu comida favorita sin nombrarla."},
@@ -395,7 +521,17 @@ const WEEKS = [
   {en:"We're running out of time.",es:"Se nos acaba el tiempo."},
   {en:"Does that work for you?",es:"¿Te queda bien?"},
   {en:"Let me check my calendar.",es:"Dejame revisar mi calendario."},
-  {en:"Thanks for your time.",es:"Gracias por tu tiempo."}],
+  {en:"Thanks for your time.",es:"Gracias por tu tiempo."},
+  {en:"Let's set up a call for Thursday.",es:"Armemos una llamada para el jueves."},
+  {en:"Can everyone see my screen?",es:"¿Todos ven mi pantalla?"},
+  {en:"You're on mute.",es:"Estás silenciado/a."},
+  {en:"Could you send me the file?",es:"¿Me podrías enviar el archivo?"},
+  {en:"I'll take notes during the meeting.",es:"Yo tomo nota durante la reunión."},
+  {en:"Let's keep it short today.",es:"Hagámosla corta hoy."},
+  {en:"Any questions so far?",es:"¿Alguna pregunta hasta acá?"},
+  {en:"I'll follow up by email.",es:"Hago el seguimiento por mail."},
+  {en:"We're on the same page.",es:"Estamos en sintonía."},
+  {en:"Let's call it a day.",es:"Terminemos por hoy."}],
  prompts:[
   {en:"Describe your job and your main tasks.",es:"Describí tu trabajo y tus tareas principales."},
   {en:"Simulate opening a meeting: greet and present the agenda.",es:"Simulá abrir una reunión: saludá y presentá el temario."},
@@ -412,7 +548,17 @@ const WEEKS = [
   {en:"I'm looking for my keys.",es:"Estoy buscando mis llaves."},
   {en:"Everybody knows the answer.",es:"Todos saben la respuesta."},
   {en:"I did my homework.",es:"Hice mi tarea."},
-  {en:"I'm interested in art.",es:"Me interesa el arte."}],
+  {en:"I'm interested in art.",es:"Me interesa el arte."},
+  {en:"I have a headache.",es:"Me duele la cabeza."},
+  {en:"She didn't say anything.",es:"Ella no dijo nada."},
+  {en:"I've been here since Monday.",es:"Estoy acá desde el lunes."},
+  {en:"He's older than me.",es:"Él es más grande que yo."},
+  {en:"I enjoyed the party very much.",es:"Disfruté mucho la fiesta."},
+  {en:"I'm used to getting up early.",es:"Estoy acostumbrado/a a levantarme temprano."},
+  {en:"She explained the problem to me.",es:"Ella me explicó el problema."},
+  {en:"I'm waiting for the bus.",es:"Estoy esperando el colectivo."},
+  {en:"It's worth trying.",es:"Vale la pena intentarlo."},
+  {en:"I made a mistake.",es:"Cometí un error."}],
  prompts:[
   {en:"Say your age, how long you've lived in your city, and what you're interested in.",es:"Decí tu edad, hace cuánto vivís en tu ciudad y qué te interesa."},
   {en:"Talk about the people in your neighborhood.",es:"Hablá de la gente de tu barrio."},
@@ -429,7 +575,17 @@ const WEEKS = [
   {en:"I can't wait for the weekend.",es:"No veo la hora de que llegue el finde."},
   {en:"Let me write that down.",es:"Dejame anotar eso."},
   {en:"What was I going to say?",es:"¿Qué iba a decir?"},
-  {en:"One step at a time.",es:"Un paso a la vez."}],
+  {en:"One step at a time.",es:"Un paso a la vez."},
+  {en:"First things first: coffee.",es:"Lo primero es lo primero: café."},
+  {en:"I'm running late.",es:"Estoy llegando tarde."},
+  {en:"That can wait until tomorrow.",es:"Eso puede esperar hasta mañana."},
+  {en:"I totally forgot about that.",es:"Me olvidé por completo de eso."},
+  {en:"Where was I going with this?",es:"¿A dónde iba con esto?"},
+  {en:"Note to self: buy milk.",es:"Nota mental: comprar leche."},
+  {en:"Almost done for today.",es:"Casi terminé por hoy."},
+  {en:"I deserve a break.",es:"Me merezco un descanso."},
+  {en:"Tomorrow will be a better day.",es:"Mañana va a ser un mejor día."},
+  {en:"Practice makes perfect.",es:"La práctica hace al maestro."}],
  prompts:[
   {en:"Narrate what you're doing right now, for one minute.",es:"Narrá lo que estás haciendo ahora mismo, durante un minuto."},
   {en:"Describe everything you see around you.",es:"Describí todo lo que ves a tu alrededor."},
@@ -446,19 +602,205 @@ const WEEKS = [
   {en:"I practice speaking every week.",es:"Practico el habla todas las semanas."},
   {en:"Making mistakes is part of learning.",es:"Cometer errores es parte de aprender."},
   {en:"I'm proud of my progress.",es:"Estoy orgulloso/a de mi progreso."},
-  {en:"This is just the beginning.",es:"Esto es solo el comienzo."}],
+  {en:"This is just the beginning.",es:"Esto es solo el comienzo."},
+  {en:"Four months ago, I could barely speak.",es:"Hace cuatro meses, apenas podía hablar."},
+  {en:"Speaking was the hardest part for me.",es:"Hablar fue lo más difícil para mí."},
+  {en:"Listening got easier with practice.",es:"Entender se volvió más fácil con la práctica."},
+  {en:"I feel much more confident now.",es:"Ahora me siento mucho más seguro/a."},
+  {en:"I still make mistakes, and that's okay.",es:"Todavía cometo errores, y está bien."},
+  {en:"My pronunciation has improved a lot.",es:"Mi pronunciación mejoró mucho."},
+  {en:"I want to keep practicing every week.",es:"Quiero seguir practicando todas las semanas."},
+  {en:"Next, I'll focus on fluency.",es:"Lo próximo: enfocarme en la fluidez."},
+  {en:"Learning a language takes time.",es:"Aprender un idioma lleva tiempo."},
+  {en:"I did it my way, and it worked.",es:"Lo hice a mi manera, y funcionó."}],
  prompts:[
   {en:"Final test: talk about yourself, your job and your plans for 5 minutes.",es:"Test final: hablá de vos, tu trabajo y tus planes durante 5 minutos."},
   {en:"What was the hardest part of these four months?",es:"¿Qué fue lo más difícil de estos cuatro meses?"},
   {en:"What's your next goal with English?",es:"¿Cuál es tu próxima meta con el inglés?"}]}
 ];
 const MODULES = [
-  {id:"learn", name:"Aprender", sub:"Frases nuevas con tarjetas", ico:"📖"},
+  {id:"learn", name:"Aprender", sub:"Las 20 frases de la semana, con tarjetas", ico:"📖"},
   {id:"quiz", name:"Quiz", sub:"Elegí la traducción correcta", ico:"✅"},
   {id:"listen", name:"Escuchá", sub:"Escribí lo que escuchás", ico:"🎧"},
   {id:"order", name:"Armá la frase", sub:"Ordená las palabras", ico:"🧩"},
+  {id:"translate", name:"Traducí", sub:"Escribí en inglés desde el español", ico:"✍️"},
+  {id:"dialog", name:"Diálogo", sub:"Conversación simulada: respondé bien cada turno", ico:"💬"},
   {id:"speak", name:"Hablá", sub:"Repetí y respondé en voz alta", ico:"🎤"},
 ];
+const DIALOGS = {
+ 1:{title:"Conociendo a alguien",turns:[
+  {w:"a",en:"Hi! Nice to meet you.",es:"¡Hola! Encantado de conocerte."},
+  {w:"u",en:"Nice to meet you too. How are you?",es:"Igualmente. ¿Cómo estás?"},
+  {w:"a",en:"I'm fine, thanks. Where are you from?",es:"Bien, gracias. ¿De dónde sos?"},
+  {w:"u",en:"I'm from Argentina. I live in Buenos Aires.",es:"Soy de Argentina. Vivo en Buenos Aires."},
+  {w:"a",en:"Oh, nice! What do you do?",es:"¡Qué bueno! ¿A qué te dedicás?"},
+  {w:"u",en:"I work at a school. And I'm learning English!",es:"Trabajo en una escuela. ¡Y estoy aprendiendo inglés!"},
+  {w:"a",en:"You're doing great! Well, I have to go.",es:"¡Lo hacés muy bien! Bueno, me tengo que ir."},
+  {w:"u",en:"It was nice talking to you. Have a nice day!",es:"Fue lindo hablar con vos. ¡Que tengas un buen día!"}]},
+ 2:{title:"Hablando de tu rutina",turns:[
+  {w:"a",en:"You look tired. Do you work a lot?",es:"Te ves cansado/a. ¿Trabajás mucho?"},
+  {w:"u",en:"Yes, my days are very busy.",es:"Sí, mis días son muy ocupados."},
+  {w:"a",en:"What time do you get up?",es:"¿A qué hora te levantás?"},
+  {w:"u",en:"I usually get up at seven.",es:"Normalmente me levanto a las siete."},
+  {w:"a",en:"And how do you get to work?",es:"¿Y cómo vas al trabajo?"},
+  {w:"u",en:"I go to work by bus.",es:"Voy al trabajo en colectivo."},
+  {w:"a",en:"Do you have free time in the evening?",es:"¿Tenés tiempo libre a la noche?"},
+  {w:"u",en:"Not much. In the evening I watch TV.",es:"No mucho. A la noche miro televisión."},
+  {w:"a",en:"Well, rest this weekend!",es:"¡Bueno, descansá el fin de semana!"},
+  {w:"u",en:"I will! I never work on Sundays.",es:"¡Lo haré! Nunca trabajo los domingos."}]},
+ 3:{title:"Ahora preguntás vos",turns:[
+  {w:"a",en:"Hi! Ask me anything, I'm happy to chat.",es:"¡Hola! Preguntame lo que quieras, me encanta charlar."},
+  {w:"u",en:"Where are you from?",es:"¿De dónde sos?"},
+  {w:"a",en:"I'm from London. It's a big city.",es:"Soy de Londres. Es una ciudad grande."},
+  {w:"u",en:"Do you like your job?",es:"¿Te gusta tu trabajo?"},
+  {w:"a",en:"I love it! I'm a designer.",es:"¡Me encanta! Soy diseñador."},
+  {w:"u",en:"What do you do in your free time?",es:"¿Qué hacés en tu tiempo libre?"},
+  {w:"a",en:"I play tennis and I cook a lot.",es:"Juego al tenis y cocino mucho."},
+  {w:"u",en:"Can I ask you a question? How old are you?",es:"¿Te puedo hacer una pregunta? ¿Cuántos años tenés?"},
+  {w:"a",en:"Ha! I'm 40 years old. Good question!",es:"¡Ja! Tengo 40 años. ¡Buena pregunta!"}]},
+ 4:{title:"En el café",turns:[
+  {w:"a",en:"Good morning! What can I get you?",es:"¡Buen día! ¿Qué le sirvo?"},
+  {w:"u",en:"I'd like a coffee, please.",es:"Quisiera un café, por favor."},
+  {w:"a",en:"Sure. Anything else?",es:"Claro. ¿Algo más?"},
+  {w:"u",en:"No, thanks. How much is it?",es:"No, gracias. ¿Cuánto cuesta?"},
+  {w:"a",en:"It's four dollars.",es:"Son cuatro dólares."},
+  {w:"u",en:"Can I pay by card?",es:"¿Puedo pagar con tarjeta?"},
+  {w:"a",en:"Of course! Here's your coffee.",es:"¡Por supuesto! Acá tiene su café."},
+  {w:"u",en:"Thank you! Keep the change.",es:"¡Gracias! Quedate con el vuelto."},
+  {w:"a",en:"Thank you! Have a great day!",es:"¡Gracias! ¡Que tenga un gran día!"}]},
+ 5:{title:"¿Qué hiciste ayer?",turns:[
+  {w:"a",en:"Hi! I called you yesterday, but no answer.",es:"¡Hola! Te llamé ayer, pero nada."},
+  {w:"u",en:"Sorry! I had a very busy day.",es:"¡Perdón! Tuve un día muy ocupado."},
+  {w:"a",en:"Really? What did you do?",es:"¿En serio? ¿Qué hiciste?"},
+  {w:"u",en:"Yesterday I went to work early.",es:"Ayer fui a trabajar temprano."},
+  {w:"a",en:"And after work?",es:"¿Y después del trabajo?"},
+  {w:"u",en:"They came to my house. We made dinner together.",es:"Vinieron a casa. Hicimos la cena juntos."},
+  {w:"a",en:"Sounds nice! Did you sleep well?",es:"¡Qué lindo! ¿Dormiste bien?"},
+  {w:"u",en:"No, I didn't sleep well. I got home late.",es:"No, no dormí bien. Llegué tarde a casa."},
+  {w:"a",en:"Well, rest tonight!",es:"¡Bueno, descansá esta noche!"},
+  {w:"u",en:"I will! But I saw a great movie last night.",es:"¡Sí! Pero anoche vi una película buenísima."}]},
+ 6:{title:"Contame tu viaje",turns:[
+  {w:"a",en:"You went to the coast, right? Tell me everything!",es:"Fuiste a la costa, ¿no? ¡Contame todo!"},
+  {w:"u",en:"You won't believe what happened.",es:"No vas a creer lo que pasó."},
+  {w:"a",en:"What? Tell me!",es:"¿Qué? ¡Contame!"},
+  {w:"u",en:"First, we went to the beach.",es:"Primero fuimos a la playa."},
+  {w:"a",en:"Sounds perfect so far...",es:"Suena perfecto hasta ahí..."},
+  {w:"u",en:"Suddenly, it started to rain.",es:"De repente, empezó a llover."},
+  {w:"a",en:"Oh no! What did you do?",es:"¡No! ¿Y qué hicieron?"},
+  {w:"u",en:"Finally, we went back to the hotel.",es:"Finalmente, volvimos al hotel."},
+  {w:"a",en:"What a story!",es:"¡Qué historia!"},
+  {w:"u",en:"Luckily, nothing bad happened. It was an amazing day.",es:"Por suerte no pasó nada malo. Fue un día increíble."}]},
+ 7:{title:"Planes para el finde",turns:[
+  {w:"a",en:"Hey! Do you have any plans for the weekend?",es:"¡Hola! ¿Tenés planes para el fin de semana?"},
+  {w:"u",en:"I'm going to visit my parents.",es:"Voy a visitar a mis padres."},
+  {w:"a",en:"Nice! And are you free on Saturday night?",es:"¡Bien! ¿Y estás libre el sábado a la noche?"},
+  {w:"u",en:"Yes! Maybe we can have dinner together.",es:"¡Sí! Quizás podamos cenar juntos."},
+  {w:"a",en:"Great idea. What time?",es:"Gran idea. ¿A qué hora?"},
+  {w:"u",en:"We're meeting at six. I'll let you know the place.",es:"Nos encontramos a las seis. Te aviso el lugar."},
+  {w:"a",en:"Perfect. Don't be late!",es:"Perfecto. ¡No llegues tarde!"},
+  {w:"u",en:"Don't worry, it'll be fine.",es:"No te preocupes, va a estar todo bien."}]},
+ 8:{title:"Debate amistoso",turns:[
+  {w:"a",en:"I think living in a big city is the best.",es:"Creo que vivir en una ciudad grande es lo mejor."},
+  {w:"u",en:"I don't agree, actually. It depends on the situation.",es:"En realidad no estoy de acuerdo. Depende de la situación."},
+  {w:"a",en:"Why? Cities have everything!",es:"¿Por qué? ¡Las ciudades tienen todo!"},
+  {w:"u",en:"In my opinion, it's too expensive.",es:"En mi opinión, es demasiado caro."},
+  {w:"a",en:"OK, that's true. But small towns are boring!",es:"OK, es verdad. ¡Pero los pueblos son aburridos!"},
+  {w:"u",en:"I'm not sure about that. For me, family comes first.",es:"No estoy seguro/a de eso. Para mí, la familia está primero."},
+  {w:"a",en:"Interesting. That makes sense.",es:"Interesante. Tiene sentido."},
+  {w:"u",en:"Good point! Let's agree to disagree.",es:"¡Buen punto! Aceptemos que pensamos distinto."}]},
+ 9:{title:"Defendé tu idea",turns:[
+  {w:"a",en:"So, you're learning English. Why is it important?",es:"Así que estás aprendiendo inglés. ¿Por qué es importante?"},
+  {w:"u",en:"There are two reasons for that.",es:"Hay dos razones para eso."},
+  {w:"a",en:"Tell me the first one.",es:"Decime la primera."},
+  {w:"u",en:"First of all, I need it for my job.",es:"Antes que nada, lo necesito para mi trabajo."},
+  {w:"a",en:"And the second?",es:"¿Y la segunda?"},
+  {w:"u",en:"What's more, I want to travel.",es:"Es más, quiero viajar."},
+  {w:"a",en:"Do you have time to study?",es:"¿Tenés tiempo para estudiar?"},
+  {w:"u",en:"The thing is, I don't have time. That's why I practice a little every day.",es:"La cuestión es que no tengo tiempo. Por eso practico un poco todos los días."},
+  {w:"a",en:"Smart. Does it work?",es:"Inteligente. ¿Funciona?"},
+  {w:"u",en:"To sum up, it's worth it. Does that make sense?",es:"En resumen, vale la pena. ¿Se entiende?"}]},
+ 10:{title:"Planes que cambian",turns:[
+  {w:"a",en:"Did you hear? The meeting was called off.",es:"¿Escuchaste? La reunión se canceló."},
+  {w:"u",en:"Really? I need to find out what happened.",es:"¿En serio? Necesito averiguar qué pasó."},
+  {w:"a",en:"Nobody knows. Maybe next week.",es:"Nadie sabe. Quizás la semana que viene."},
+  {w:"u",en:"OK. Can you pick me up at eight tomorrow?",es:"OK. ¿Me pasás a buscar a las ocho mañana?"},
+  {w:"a",en:"Sure! Are we still going to the gym?",es:"¡Claro! ¿Seguimos yendo al gimnasio?"},
+  {w:"u",en:"Yes, but first I need to drop off the kids at school.",es:"Sí, pero primero tengo que dejar a los chicos en la escuela."},
+  {w:"a",en:"No problem. Oh, and we have no coffee at the office.",es:"No hay problema. Ah, y no queda café en la oficina."},
+  {w:"u",en:"Again? I ran out of coffee at home too!",es:"¿Otra vez? ¡Yo también me quedé sin café en casa!"},
+  {w:"a",en:"Ha! See you tomorrow then.",es:"¡Ja! Nos vemos mañana entonces."},
+  {w:"u",en:"I'm looking forward to it. Don't give up on the gym!",es:"Lo espero con ganas. ¡No abandones el gimnasio!"}]},
+ 11:{title:"Charla con muletillas",turns:[
+  {w:"a",en:"So... did you like the movie?",es:"Y... ¿te gustó la película?"},
+  {w:"u",en:"Well, let me think... To be honest, I didn't like it.",es:"Bueno, dejame pensar... Para ser honesto/a, no me gustó."},
+  {w:"a",en:"Really? Everyone loves it!",es:"¿En serio? ¡A todos les encanta!"},
+  {w:"u",en:"I mean, it's complicated. The story was strange.",es:"O sea, es complicado. La historia era rara."},
+  {w:"a",en:"Fair enough. Hey, what's the name of that actor?",es:"Está bien. Che, ¿cómo se llama ese actor?"},
+  {w:"u",en:"It's on the tip of my tongue... Give me a second.",es:"Lo tengo en la punta de la lengua... Dame un segundo."},
+  {w:"a",en:"The tall one, from that series!",es:"¡El alto, el de esa serie!"},
+  {w:"u",en:"You know what? I don't remember. Anyway, let's change the subject.",es:"¿Sabés qué? No me acuerdo. En fin, cambiemos de tema."},
+  {w:"a",en:"OK, no problem!",es:"¡OK, no hay problema!"},
+  {w:"u",en:"By the way, how's your family?",es:"Por cierto, ¿cómo está tu familia?"},
+  {w:"a",en:"They're great, thanks for asking!",es:"¡Están muy bien, gracias por preguntar!"}]},
+ 12:{title:"Se me escapa la palabra",turns:[
+  {w:"a",en:"Hi! Welcome to the store. What are you looking for?",es:"¡Hola! Bienvenido/a a la tienda. ¿Qué está buscando?"},
+  {w:"u",en:"I forget the word, but it's like a small house... for a dog!",es:"Me olvido la palabra, pero es como una casa chica... ¡para un perro!"},
+  {w:"a",en:"Ah, a doghouse! We have those. Anything else?",es:"¡Ah, una cucha! Tenemos. ¿Algo más?"},
+  {w:"u",en:"Yes... What's the word for this in English? It's a thing you use to open bottles.",es:"Sí... ¿Cuál es la palabra para esto? Es una cosa que usás para abrir botellas."},
+  {w:"a",en:"A bottle opener! Here it is.",es:"¡Un destapador! Acá está."},
+  {w:"u",en:"Perfect! And one more: it's the thing that keeps food cold.",es:"¡Perfecto! Y una más: es la cosa que mantiene la comida fría."},
+  {w:"a",en:"A fridge? That's in another store!",es:"¿Una heladera? ¡Eso está en otra tienda!"},
+  {w:"u",en:"Ha! OK. How much is it?",es:"¡Ja! OK. ¿Cuánto cuesta?"},
+  {w:"a",en:"Ten dollars in total.",es:"Diez dólares en total."},
+  {w:"u",en:"Great. Am I explaining myself? My English is improving!",es:"Genial. ¿Me explico? ¡Mi inglés está mejorando!"},
+  {w:"a",en:"You're doing great!",es:"¡Lo estás haciendo muy bien!"}]},
+ 13:{title:"Reunión de trabajo",turns:[
+  {w:"a",en:"Good morning! Can everyone see my screen?",es:"¡Buen día! ¿Todos ven mi pantalla?"},
+  {w:"u",en:"Yes. You're on mute, though!",es:"Sí. ¡Pero estás silenciado/a!"},
+  {w:"a",en:"Sorry! OK, let's start. First point: the schedule.",es:"¡Perdón! OK, empecemos. Primer punto: el cronograma."},
+  {w:"u",en:"Can we schedule a meeting for Monday?",es:"¿Podemos agendar una reunión para el lunes?"},
+  {w:"a",en:"Monday works. Second point: the report.",es:"El lunes va. Segundo punto: el informe."},
+  {w:"u",en:"I'll send you the report today.",es:"Te envío el informe hoy."},
+  {w:"a",en:"Perfect. Anything else?",es:"Perfecto. ¿Algo más?"},
+  {w:"u",en:"Let's keep it short today. I have another call.",es:"Hagámosla corta hoy. Tengo otra llamada."},
+  {w:"a",en:"Sure. I'll follow up by email.",es:"Claro. Hago el seguimiento por mail."},
+  {w:"u",en:"Great, we're on the same page. Thanks for your time!",es:"Genial, estamos en sintonía. ¡Gracias por tu tiempo!"}]},
+ 14:{title:"Entrevista sin errores",turns:[
+  {w:"a",en:"Tell me about yourself. How old are you?",es:"Contame de vos. ¿Cuántos años tenés?"},
+  {w:"u",en:"I'm 35 years old.",es:"Tengo 35 años.",bad:["I have 35 years.","I have 35 years old."]},
+  {w:"a",en:"And how long have you lived in your city?",es:"¿Y hace cuánto vivís en tu ciudad?"},
+  {w:"u",en:"I've lived here for ten years.",es:"Vivo acá desde hace diez años.",bad:["I'm living here since ten years.","I live here since ten years ago."]},
+  {w:"a",en:"What do you think of your neighborhood?",es:"¿Qué pensás de tu barrio?"},
+  {w:"u",en:"People are very friendly here.",es:"La gente es muy amable acá.",bad:["People is very friendly here.","The people is very friendly here."]},
+  {w:"a",en:"Are you married?",es:"¿Estás casado/a?"},
+  {w:"u",en:"Yes, I'm married to a teacher.",es:"Sí, estoy casado/a con un/a docente.",bad:["Yes, I'm married with a teacher.","Yes, I married with a teacher."]},
+  {w:"a",en:"Last question: what are you interested in?",es:"Última pregunta: ¿qué te interesa?"},
+  {w:"u",en:"I'm interested in art.",es:"Me interesa el arte.",bad:["I'm interested on art.","I'm interesting in art."]},
+  {w:"a",en:"Perfect English. Well done!",es:"Inglés perfecto. ¡Muy bien!"}]},
+ 15:{title:"Pensando en voz alta",turns:[
+  {w:"a",en:"You look busy. What's on your mind?",es:"Te ves ocupado/a. ¿En qué estás pensando?"},
+  {w:"u",en:"First things first: coffee. Now I'm making coffee.",es:"Lo primero es lo primero: café. Ahora estoy preparando café."},
+  {w:"a",en:"Ha! And then?",es:"¡Ja! ¿Y después?"},
+  {w:"u",en:"I should answer that email. And I'm running late!",es:"Debería responder ese mail. ¡Y estoy llegando tarde!"},
+  {w:"a",en:"Anything else on the list?",es:"¿Algo más en la lista?"},
+  {w:"u",en:"I need to buy bread on my way home.",es:"Tengo que comprar pan camino a casa."},
+  {w:"a",en:"Busy day! Don't forget to rest.",es:"¡Qué día! No te olvides de descansar."},
+  {w:"u",en:"Almost done for today. I deserve a break.",es:"Casi terminé por hoy. Me merezco un descanso."},
+  {w:"a",en:"You do! See you.",es:"¡Te lo merecés! Nos vemos."},
+  {w:"u",en:"Tomorrow will be a better day. One step at a time!",es:"Mañana va a ser un mejor día. ¡Un paso a la vez!"}]},
+ 16:{title:"Entrevista final",turns:[
+  {w:"a",en:"Welcome to your final interview! Tell me about yourself.",es:"¡Bienvenido/a a tu entrevista final! Contame de vos."},
+  {w:"u",en:"Let me tell you about myself. I'm from Argentina and I work at a school.",es:"Dejame contarte sobre mí. Soy de Argentina y trabajo en una escuela."},
+  {w:"a",en:"How was your English four months ago?",es:"¿Cómo era tu inglés hace cuatro meses?"},
+  {w:"u",en:"Four months ago, I could barely speak.",es:"Hace cuatro meses, apenas podía hablar."},
+  {w:"a",en:"And now?",es:"¿Y ahora?"},
+  {w:"u",en:"Now I can hold a conversation. I feel much more confident.",es:"Ahora puedo mantener una conversación. Me siento mucho más seguro/a."},
+  {w:"a",en:"What was the hardest part?",es:"¿Qué fue lo más difícil?"},
+  {w:"u",en:"Speaking was the hardest part for me. But little by little, I improved.",es:"Hablar fue lo más difícil. Pero de a poco, mejoré."},
+  {w:"a",en:"What's next for you?",es:"¿Qué sigue para vos?"},
+  {w:"u",en:"My next goal is to speak fluently. This is just the beginning!",es:"Mi próxima meta es hablar con fluidez. ¡Esto es solo el comienzo!"},
+  {w:"a",en:"Congratulations. You did it!",es:"Felicitaciones. ¡Lo lograste!"}]}
+};
 
 /* ================= REPASO INTELIGENTE (Leitner) ================= */
 WEEKS.forEach(w=>w.phrases.forEach((p,i)=>{ p.key = w.n+":"+i; p.week = w.n; }));
@@ -476,7 +818,15 @@ function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} 
 function wk(n){ if(!S.weeks[n]) S.weeks[n]={}; return S.weeks[n]; }
 function modDone(n,m){ return !!wk(n)[m]; }
 function weekDone(n){ return MODULES.every(mo=>modDone(n,mo.id)); }
-function weekUnlocked(n){ return n===1 || S.free || weekDone(n-1); }
+function unlockInfo(n){
+  if(n===1 || S.free) return {open:true};
+  if(!weekDone(n-1)) return {open:false, why:"prev"};
+  const t0 = wk(n-1).t0 || 0;
+  const wait = t0 + 5*DAY - Date.now();
+  if(wait > 0) return {open:false, why:"time", days:Math.max(1, Math.ceil(wait/DAY))};
+  return {open:true};
+}
+function weekUnlocked(n){ return unlockInfo(n).open; }
 function totalPct(){
   let d=0; WEEKS.forEach(w=>MODULES.forEach(mo=>{ if(modDone(w.n,mo.id)) d++; }));
   return Math.round(100*d/(WEEKS.length*MODULES.length));
@@ -611,12 +961,13 @@ function renderHome(){
       <div class="month-h"><span class="mn">Mes ${mo.n} — ${mo.title}</span><span class="mt">${mo.sub}</span></div>
       <div class="weeks">`;
     WEEKS.filter(w=>w.m===mo.n).forEach(w=>{
-      const unlocked = weekUnlocked(w.n);
+      const info = unlockInfo(w.n);
       const dots = MODULES.map(m=>`<span class="dot ${modDone(w.n,m.id)?"on":""}"></span>`).join("");
-      const state = weekDone(w.n) ? "✔" : unlocked ? "›" : "🔒";
-      html += `<button class="week-row" data-w="${w.n}" ${unlocked?"":"disabled"} aria-label="Semana ${w.n}: ${esc(w.title)}${unlocked?"":" (bloqueada)"}">
+      const state = weekDone(w.n) ? "✔" : info.open ? "›" : (info.why==="time"?"⏳":"🔒");
+      const lockNote = (!info.open && info.why==="time") ? `<br><span class="wlock">Se desbloquea en ${info.days} día${info.days===1?"":"s"} — mientras tanto: repaso inteligente</span>` : "";
+      html += `<button class="week-row" data-w="${w.n}" ${info.open?"":"disabled"} aria-label="Semana ${w.n}: ${esc(w.title)}${info.open?"":" (bloqueada)"}">
         <span class="wnum">${w.n}</span>
-        <span class="wmain"><span class="wtitle">${esc(w.title)}</span><br><span class="wgoal">${esc(w.goal)}</span><span class="dots" style="margin-top:5px">${dots}</span></span>
+        <span class="wmain"><span class="wtitle">${esc(w.title)}</span><br><span class="wgoal">${esc(w.goal)}</span>${lockNote}<span class="dots" style="margin-top:5px">${dots}</span></span>
         <span class="wstate" style="color:${weekDone(w.n)?"var(--ok)":"var(--muted)"}">${state}</span>
       </button>`;
     });
@@ -625,12 +976,13 @@ function renderHome(){
   html += `<section class="method">
     <h2>Cómo usar tu ruta (4 horas por semana)</h2>
     <ol>
-      <li><b>Aprender + Quiz</b> (1 h, repartida en dos días): incorporá las 10 frases de la semana.</li>
-      <li><b>Escuchá + Armá la frase</b> (1 h): entrená el oído y la estructura.</li>
-      <li><b>Hablá</b> (1 h): repetí cada frase en voz alta y respondé las consignas con el micrófono. Es el bloque más importante.</li>
-      <li><b>Repaso inteligente</b> (1 h, repartida en el resto de la semana): la app registra cada frase que acertás o fallás y te las trae de vuelta justo cuando estás por olvidarlas. Además, grabate los checkpoints de las semanas 4, 8, 12 y 16.</li>
+      <li><b>Día 1 — Aprender + Quiz</b> (~1 h): incorporá las 20 frases nuevas y ponete a prueba.</li>
+      <li><b>Día 2 — Escuchá + Armá la frase</b> (~45'): entrená el oído y la estructura.</li>
+      <li><b>Día 3 — Traducí + Diálogo</b> (~45'): producí inglés desde cero y mantené tu primera conversación de la semana.</li>
+      <li><b>Día 4 — Hablá</b> (~1 h): repetí cada frase en voz alta y respondé las consignas con el micrófono, mínimo 45 segundos cada una. Es el bloque más importante.</li>
+      <li><b>Todos los días — Repaso inteligente</b> (10-15'): la app registra cada frase que acertás o fallás y te las trae de vuelta justo cuando estás por olvidarlas. Este repaso diario es lo que completa tus 4 horas.</li>
     </ol>
-    <p class="note">Regla de oro: todo en voz alta. Leer sin hablar no cuenta. Una semana se desbloquea al completar la anterior (podés activar el modo libre en ⚙).</p>
+    <p class="note">Regla de oro: todo en voz alta. Leer sin hablar no cuenta. Cada semana se desbloquea al completar la anterior <b>y como mínimo 5 días después de haberla empezado</b> — el idioma se fija con días de repaso, no con maratones. Si querés saltarte el ritmo, activá el modo libre en ⚙. Grabate los checkpoints de las semanas 4, 8, 12 y 16.</p>
   </section>`;
   app.innerHTML = html;
   app.querySelectorAll(".week-row:not(:disabled)").forEach(b=>b.addEventListener("click",()=>renderWeek(+b.dataset.w)));
@@ -641,6 +993,8 @@ function renderHome(){
 function renderWeek(n){
   refreshGlobal();
   const w = WEEKS.find(x=>x.n===n);
+  const rec = wk(n);
+  if(!rec.t0){ rec.t0 = Date.now(); save(); }
   let html = `<button class="back" id="back">‹ Volver a la ruta</button>
   <div class="wk-head">
     <div class="eyebrow">Mes ${w.m} · Semana ${w.n}</div>
@@ -662,7 +1016,7 @@ function renderWeek(n){
   document.getElementById("back").addEventListener("click",goHome);
   app.querySelectorAll(".mod-row").forEach(b=>b.addEventListener("click",()=>{
     const id=b.dataset.m;
-    ({learn:runLearn,quiz:runQuiz,listen:runListen,order:runOrder,speak:runSpeak})[id](w);
+    ({learn:runLearn,quiz:runQuiz,listen:runListen,order:runOrder,translate:runTranslate,dialog:runDialog,speak:runSpeak})[id](w);
   }));
   window.scrollTo(0,0);
 }
@@ -684,15 +1038,22 @@ function finishModule(w, modId, msg){
   wk(w.n)[modId]=true; save(); refreshGlobal();
   const ui = exShell(w, "¡Listo!");
   const allDone = weekDone(w.n);
+  const nxt = w.n<16 ? unlockInfo(w.n+1) : null;
+  let doneMsg = "";
+  if(allDone){
+    if(w.n===16) doneMsg = "¡Terminaste la ruta completa!";
+    else if(nxt.open) doneMsg = "Se desbloqueó la semana "+(w.n+1)+".";
+    else doneMsg = "La semana "+(w.n+1)+" se desbloquea en "+nxt.days+" día"+(nxt.days===1?"":"s")+". Hasta entonces: repaso inteligente todos los días y las consignas de habla en voz alta — así se fija lo que aprendiste.";
+  }
   ui.body.innerHTML = `<div class="exd center">
     <div style="font-size:2.2rem">🎉</div>
     <div class="result-big">${msg}</div>
-    ${allDone?`<p>Completaste la <b>semana ${w.n}</b>. ${w.n<16?"Se desbloqueó la semana "+(w.n+1)+".":"¡Terminaste la ruta completa!"}</p>`:""}
+    ${allDone?`<p>Completaste la <b>semana ${w.n}</b>. ${doneMsg}</p>`:""}
     <div class="row">
-      <button class="btn" id="cont">${allDone && w.n<16 ? "Ir a la semana "+(w.n+1) : "Seguir con la semana"}</button>
+      <button class="btn" id="cont">${allDone && w.n<16 && nxt.open ? "Ir a la semana "+(w.n+1) : "Seguir con la semana"}</button>
       <button class="btn ghost" id="home2">Ver la ruta</button>
     </div></div>`;
-  document.getElementById("cont").addEventListener("click",()=> (allDone && w.n<16) ? renderWeek(w.n+1) : renderWeek(w.n));
+  document.getElementById("cont").addEventListener("click",()=> (allDone && w.n<16 && nxt.open) ? renderWeek(w.n+1) : renderWeek(w.n));
   document.getElementById("home2").addEventListener("click",goHome);
 }
 function retryScreen(w, modId, score, need, total, runAgain){
@@ -738,8 +1099,8 @@ function runLearn(w){
 
 /* ---------- Módulo: Quiz ---------- */
 function runQuiz(w){
-  const items = shuffle(w.phrases.slice()).slice(0,8);
-  const NEED = 6;
+  const items = shuffle(w.phrases.slice()).slice(0,12);
+  const NEED = 9;
   let i=0, score=0;
   const ui = exShell(w, "✅ Quiz");
   function q(){
@@ -778,8 +1139,8 @@ function runQuiz(w){
 
 /* ---------- Módulo: Escuchá ---------- */
 function runListen(w){
-  const items = shuffle(w.phrases.slice()).slice(0,6);
-  const NEED = 4;
+  const items = shuffle(w.phrases.slice()).slice(0,8);
+  const NEED = 6;
   let i=0, score=0;
   const ui = exShell(w, "🎧 Escuchá");
   if(!("speechSynthesis" in window)){
@@ -844,7 +1205,7 @@ function runListen(w){
 function runOrder(w){
   const items = shuffle(w.phrases.filter(p=>{
     const n=p.en.split(" ").length; return n>=4 && n<=9;
-  })).slice(0,6);
+  })).slice(0,8);
   const NEED = Math.max(1, items.length-2);
   let i=0, score=0;
   const ui = exShell(w, "🧩 Armá la frase");
@@ -891,7 +1252,7 @@ function runOrder(w){
 
 /* ---------- Módulo: Hablá ---------- */
 function runSpeak(w){
-  const phrases = shuffle(w.phrases.slice()).slice(0,6);
+  const phrases = shuffle(w.phrases.slice()).slice(0,10);
   const steps = phrases.map(p=>({type:"shadow",p})).concat(w.prompts.map(p=>({type:"prompt",p})));
   let i=0;
   const ui = exShell(w, "🎤 Hablá");
@@ -946,13 +1307,13 @@ function runSpeak(w){
         <div class="eyebrow" style="margin-bottom:6px">Consigna abierta</div>
         <p class="phrase-en" style="font-size:1.25rem">${esc(st.p.en)}</p>
         <p class="phrase-es">${esc(st.p.es)}</p>
-        <p class="note">Respondé en voz alta, mínimo 30 segundos. No busques la perfección: comunicá.</p>
+        <p class="note">Respondé en voz alta, mínimo 45 segundos. No busques la perfección: comunicá.</p>
         <div class="row">
           <button class="btn sec" id="play">🔊 Escuchar la consigna</button>
           ${hasSR?'<button class="mic idle" id="mic" aria-label="Grabar">🎙</button>':""}
         </div>
         <div class="transcript" id="tr" ${hasSR?"":"hidden"}>${hasSR?"Tocá el micrófono y respondé — vas a ver lo que dijiste acá.":""}</div>
-        <div class="row"><button class="btn" id="next">Hecho, siguiente ›</button></div>
+        <div class="row"><button class="btn" id="next" disabled>Seguí hablando… 45s</button></div>
       </div>`;
       document.getElementById("play").addEventListener("click",()=>say(st.p.en));
       if(hasSR){
@@ -966,7 +1327,121 @@ function runSpeak(w){
           });
         });
       }
-      document.getElementById("next").addEventListener("click",()=>{ i++; step(); });
+      const nb = document.getElementById("next");
+      let secs = 45;
+      const iv = setInterval(()=>{
+        secs--;
+        if(!document.body.contains(nb)){ clearInterval(iv); return; }
+        if(secs<=0){ clearInterval(iv); nb.disabled=false; nb.textContent="Hecho, siguiente ›"; }
+        else nb.textContent = "Seguí hablando… "+secs+"s";
+      }, 1000);
+      nb.addEventListener("click",()=>{ clearInterval(iv); i++; step(); });
+    }
+  }
+  step();
+}
+
+/* ---------- Módulo: Traducí ---------- */
+function runTranslate(w){
+  const items_ = shuffle(w.phrases.slice()).slice(0,8);
+  const NEED = 6;
+  let i=0, score=0;
+  const ui = exShell(w, "✍️ Traducí");
+  function q(){
+    if(i>=items_.length){
+      return score>=NEED ? finishModule(w,"translate",`Producción dominada: ${score}/${items_.length}`)
+                         : retryScreen(w,"translate",score,NEED,items_.length,runTranslate);
+    }
+    ui.prog(i, items_.length);
+    const p = items_[i];
+    ui.body.innerHTML = `<div class="exd">
+      <p class="phrase-es center">Escribilo en inglés:</p>
+      <p class="phrase-en center" style="font-size:1.25rem">${esc(p.es)}</p>
+      <input type="text" id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribí la frase en inglés..." style="margin-top:14px">
+      <div class="feedback" id="fb"></div>
+      <div class="row">
+        <button class="btn ghost" id="hint">💡 Pista</button>
+        <button class="btn" id="check">Corregir</button>
+      </div></div>`;
+    const input = document.getElementById("ans");
+    input.focus();
+    let tries = 0, hinted = false;
+    document.getElementById("hint").addEventListener("click",()=>{
+      if(hinted) return; hinted = true;
+      const fb = document.getElementById("fb");
+      fb.textContent = "Empieza así: “"+p.en.split(" ").slice(0,2).join(" ")+"…”";
+      fb.className = "feedback";
+    });
+    function check(){
+      const val = input.value.trim();
+      if(!val) return;
+      const fb = document.getElementById("fb");
+      if(similarity(val, p.en) >= 0.78){
+        score++; recordResult(p,true);
+        fb.textContent = "¡Muy bien! — "+p.en; fb.className="feedback ok";
+        say(p.en); end();
+      } else if(tries===0){
+        tries++; fb.textContent = "Todavía no... probá una vez más (usá la pista si querés)."; fb.className="feedback bad";
+      } else {
+        recordResult(p,false);
+        fb.textContent = "Era: "+p.en; fb.className="feedback bad";
+        say(p.en,0.8); end();
+      }
+    }
+    function end(){
+      document.getElementById("check").disabled = true; input.disabled = true;
+      setTimeout(()=>{ i++; q(); }, 1900);
+    }
+    document.getElementById("check").addEventListener("click",check);
+    input.addEventListener("keydown",e=>{ if(e.key==="Enter") check(); });
+  }
+  q();
+}
+
+/* ---------- Módulo: Diálogo ---------- */
+function runDialog(w){
+  const d = DIALOGS[w.n];
+  const ui = exShell(w, "💬 Diálogo");
+  let i=0, errs=0;
+  ui.body.innerHTML = `<p class="note center" style="margin-bottom:12px"><b>${esc(d.title)}</b> — en cada turno tuyo, elegí la respuesta correcta. Después repetila en voz alta.</p>
+    <div class="chat" id="chat"></div><div id="zone"></div>`;
+  const chat = document.getElementById("chat"), zone = document.getElementById("zone");
+  function bubble(t){
+    const div = document.createElement("div");
+    div.className = "bub "+(t.w==="a"?"a":"u");
+    div.innerHTML = esc(t.en)+"<small>"+esc(t.es)+"</small>";
+    chat.appendChild(div);
+    div.scrollIntoView({block:"nearest", behavior:"smooth"});
+  }
+  function step(){
+    ui.prog(Math.min(i,d.turns.length), d.turns.length);
+    if(i>=d.turns.length){
+      zone.innerHTML = `<div class="center">
+        <div class="feedback ${errs<=2?"ok":"bad"}" style="min-height:auto">${errs===0?"¡Diálogo perfecto, sin errores!":"Terminaste con "+errs+" error"+(errs===1?"":"es")+"."}</div>
+        <div class="row"><button class="btn" id="fin">Completar módulo</button></div></div>`;
+      document.getElementById("fin").addEventListener("click",()=>finishModule(w,"dialog","Diálogo completado"+(errs===0?" sin errores":"")));
+      return;
+    }
+    const t = d.turns[i];
+    if(t.w==="a"){
+      bubble(t); say(t.en); i++;
+      setTimeout(step, 700);
+    } else {
+      let distr;
+      if(t.bad){ distr = t.bad.map(en=>({en})); }
+      else {
+        const others = shuffle(d.turns.filter(x=>x.w==="u" && x.en!==t.en)).slice(0,1);
+        const pool = shuffle(allPhrases().filter(p=>p.en!==t.en)).slice(0,1);
+        distr = others.concat(pool);
+      }
+      const opts = shuffle([{en:t.en, ok:true}, ...distr.slice(0,2)]);
+      zone.innerHTML = `<p class="note center">Tu turno — <i>${esc(t.es)}</i></p>
+        <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o.en)}</button>`).join("")}</div>`;
+      zone.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+        const o = opts[+b.dataset.k];
+        if(o.ok){ zone.innerHTML=""; bubble(t); say(t.en); i++; setTimeout(step, 600); }
+        else { errs++; b.classList.add("wrong"); b.disabled = true; }
+      }));
     }
   }
   step();
